@@ -1,0 +1,126 @@
+Matrimony Nexus - Project Working Roadmap
+
+Project Overview:
+The Matrimony Nexus connects individuals seeking life partners in an intuitive, user-friendly environment. This MERN stack-based platform emphasizes responsive design, secure authentication, and effective matchmaking functionality.
+
+---
+
+Required Tasks Implementation
+
+1. Navbar:
+- Design: Create a flexible navbar with the following:
+  - Site logo positioned centrally. ✅
+  - Navigation links: Home, Biodatas, “About Us,” Contact Us, and Dashboard.
+  - Profile photo display for logged-in users; Login button for unauthenticated users.
+  - Responsive design for mobile, tablet, and desktop screens.
+
+---
+
+2. Footer:
+- Content: Add contact info, social media links, and a copyright notice.
+- Design: Unique and elegant design, matching the overall website aesthetics.
+
+---
+
+3. JSON Data Generation:
+- Create a JSON data file containing at least 6 biodatas with attributes:
+  - id, name, profileImage, division, age, occupation, and biodataType.
+- Include two biodatas per division for a broader range of matchmaking opportunities.
+
+---
+
+4. Home Page Components:
+- Banner/Slider Section:
+  - Integrate an eye-catching banner/slider to showcase premium member profiles and platform features.
+- Premium Members Section:
+  - Display six premium member profile cards with attributes like image, biodata type, age, occupation, and division.
+  - Include a dropdown to sort by age (ascending/descending).
+- How It Works Section:
+  - Explain the matchmaking process with visually engaging steps.
+- Success Counter Section:
+  - Show counters for total biodatas, male biodatas, female biodatas, and successful matches.
+- Success Story Section:
+  - Highlight testimonials and reviews from married couples with images, marriage dates, and their stories.
+
+---
+
+5. Biodatas Page:
+- Display biodata cards from JSON data with attributes like image, name, age, occupation, and division.
+- Filter Options:
+  - Provide filters for age range, biodata type, and division.
+- View Profile Button:
+  - Redirects to a private biodata details page.
+
+---
+
+6. Biodata Details Page (Private Route):
+- Display biodata details including:
+  - Name, age, occupation, division, and more.
+  - Similar biodata suggestions (up to 3).
+- Add the following buttons:
+  - Add to Favorites: Adds biodata to the user’s favorites collection.
+  - Request Contact Information: Redirects normal users to a checkout page for payment and admin approval.
+
+---
+
+7. Authentication System:
+- Login and Registration:
+  - Login Form: Email, Password, and Google Sign-in.
+  - Registration Form: Name, Email, Photo URL, Password.
+  - Password validation: Minimum 6 characters with at least one uppercase and one lowercase letter.
+  - Implement social login using Google.
+- Protected Routes:
+  - Ensure private routes redirect unauthenticated users to the login page.
+
+---
+
+8. Dashboard (Private Route):
+- User Dashboard:
+  - Edit Biodata: Form to create or edit biodata information.
+  - View Biodata: Displays the user’s biodata information.
+  - My Contact Requests: Shows pending and approved contact requests.
+  - Favorites Biodata: Displays all favorited biodatas.
+- Admin Dashboard:
+  - View statistics (total biodatas, male/female biodatas, premium members, and revenue).
+  - Manage Users: Approve premium requests and contact requests.
+  - Success Stories: View, approve, and manage success stories.
+
+---
+
+9. Checkout Page (Private Route):
+- Form Fields:
+  - biodataId (readonly), self-email (readonly), Stripe card number input.
+- On submission:
+  - Payment is processed, and contact request goes to admin for approval.
+
+---
+
+10. Error Page:
+- 404 Page with a "Go Home" button.
+
+---
+
+Challenges Addressed:
+1. Responsive Design: Ensure all pages are optimized for mobile, tablet, and desktop.
+2. Toast Notifications: Provide feedback for all CRUD operations and authentication.
+3. Secure Environment: Protect Firebase keys and MongoDB credentials using environment variables.
+4. Data Fetching: Use Tanstack Query for optimized data fetching.
+5. Deployment:
+   - Hosted on [Netlify/Surge/Vercel].
+   - Configure routes for smooth reloading on private routes.
+
+---
+
+Final Deliverables:
+1. GitHub Repository:
+   - Includes all meaningful commits with descriptive messages.
+   - Link: [Insert GitHub Repo Link Here]
+
+2. Live Application:
+   - Hosted on [Netlify/Surge/Vercel].
+   - Live Link: [Insert Live Application Link Here]
+
+3. Readme File:
+   - Contains project name, purpose, key features, live URL, and any npm packages used.
+
+---
