@@ -6,7 +6,7 @@ import EditBioData from "./EditBioData";
 const EditBiodataPage = () => {
   const [existingBiodata, setExistingBiodata] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
 
@@ -20,9 +20,9 @@ const EditBiodataPage = () => {
           const biodataArray = response.data.data;
 
           if (biodataArray && biodataArray.length > 0) {
-            setExistingBiodata(biodataArray[0]); /
+            setExistingBiodata(biodataArray[0]);
           } else {
-            setExistingBiodata(null); 
+            setExistingBiodata(null);
           }
         } else {
           setError("User email not found. Please log in again.");

@@ -1,5 +1,5 @@
 import AdminRoute from "@/context/AdminRoute";
-import AuthProvider from "@/context/AuthProvider";
+import PrivateRoute from "@/context/PrivateRoute";
 import AboutPage from "@/Page/AboutPage";
 import BiodataDetailsPage from "@/Page/BiodataDetailsPage";
 import ContactPage from "@/Page/ContactPage";
@@ -52,9 +52,9 @@ const router = createBrowserRouter(
         {
           path: "/biodata-details/:biodataId",
           element: (
-            <AuthProvider>
+            <PrivateRoute>
               <BiodataDetailsPage />
-            </AuthProvider>
+            </PrivateRoute>
           ),
           loader: ({ params }) =>
             fetch(
@@ -80,9 +80,9 @@ const router = createBrowserRouter(
         {
           path: "/checkout/:biodataId",
           element: (
-            <AuthProvider>
+            <PrivateRoute>
               <CheckoutPage />
-            </AuthProvider>
+            </PrivateRoute>
           ),
           loader: ({ params }) =>
             fetch(
@@ -94,9 +94,9 @@ const router = createBrowserRouter(
     {
       path: "dashboard",
       element: (
-        <AuthProvider>
+        <PrivateRoute>
           <Dashboard />
-        </AuthProvider>
+        </PrivateRoute>
       ),
       errorElement: <ErrorPage />,
       children: [
