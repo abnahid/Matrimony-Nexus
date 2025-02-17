@@ -99,8 +99,9 @@ const Footer = () => {
         <div>
           <h3 className="font-bold mb-4 text-lg">Follow Us</h3>
           <p className="mb-4 text-gray-600">
-            Stay connected with us through social media:
+            Stay connected with us through social media for the latest updates. Follow us to stay informed about our newest features, special offers, and community events!
           </p>
+
           <div className="flex space-x-4">
             <a
               href="https://facebook.com/wispwerofnahid"
@@ -130,8 +131,9 @@ const Footer = () => {
         </div>
       </div>
       <div className="text-center mt-8 text-xs text-gray-500">
-        <p>&copy; 2025 Matrimony Nexus | All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Matrimony Nexus | All rights reserved.</p>
       </div>
+
     </footer>
   );
 };
