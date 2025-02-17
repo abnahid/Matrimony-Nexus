@@ -1,6 +1,17 @@
 import Banner from "@/assets/Home/banner.jpg";
-import { NavLink } from "react-router-dom";
+import useAuth from "@/hooks/useAuth";
+import { NavLink, useNavigate } from "react-router-dom";
+
 const MatrimonyBanner = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const handleClick = () => {
+    if (user) {
+      navigate("/biodatas");
+    } else {
+      navigate("/register");
+    }
+  };
   return (
     <section className="px-2 py-32 bg-white md:px-0">
       <div className="container items-center max-w-7xl px-8 mx-auto xl:px-5">
@@ -19,9 +30,10 @@ const MatrimonyBanner = () => {
                 first step toward your dream journey.
               </p>
               <div className="relative flex flex-col sm:flex-row sm:space-x-4">
-                <NavLink
-                  to="/biodatas"
-                  className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-custom-gradient rounded-md sm:mb-0 hover:bg-BgPrimary sm:w-auto"
+                <button
+                  onClick={handleClick}
+                  className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-custom-gradient rounded-md sm:mb-0 hover:opacity-80 sm:w-auto transition-all duration-300 ease-in-out"
+                  aria-label="Get Started"
                 >
                   Get Started
                   <svg
@@ -37,7 +49,7 @@ const MatrimonyBanner = () => {
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
-                </NavLink>
+                </button>
                 <NavLink
                   to="/about-us"
                   className="flex items-center px-6 py-3 text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600"
