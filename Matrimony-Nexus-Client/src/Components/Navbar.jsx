@@ -62,7 +62,7 @@ const Navbar = () => {
           to="/about-us"
           className={({ isActive }) =>
             isActive
-              ? `${activeStyle} hover:text-gray-700 px-3 py-1 rounded-lg`
+              ? `${activeStyle} hover:text-gray-700  px-3 py-1 rounded-lg`
               : "hover:text-gray-700 px-3 py-1 rounded-lg"
           }
         >
@@ -114,11 +114,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white shadow-lg dark:bg-gray-900"
-          : "bg-transparent dark:bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
+        ? "bg-white shadow-lg dark:bg-gray-900"
+        : "bg-transparent dark:bg-transparent"
+        }`}
     >
       <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Mobile Menu Button */}
@@ -136,16 +135,17 @@ const Navbar = () => {
         </div>
 
         <Link to="/" className="flex items-center">
-          <img src={logoImg} alt="Matrimony Nexus Logo" className="h-12" />
+          <img src={logoImg} alt="Matrimony Nexus Logo" className="h-12 " />
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex">
-          <ul className="flex space-x-6">{links}</ul>
+          <ul className="flex space-x-6 dark:text-white text-gray-900">{links}</ul>
         </div>
 
         {/* User Profile Dropdown */}
         <div className="flex items-center space-x-4">
+
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

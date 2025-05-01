@@ -6,7 +6,7 @@ const AppSidebar = () => {
   const [filters, setFilters] = useState({
     gender: "Male",
     ageRange: [18, 35],
-    heightRange: [140, 190],
+    heightRange: [0, 190],
     permanentDivision: "",
     biodataId: "",
   });

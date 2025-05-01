@@ -1,11 +1,18 @@
 import AdminRoute from "@/context/AdminRoute";
 import PrivateRoute from "@/context/PrivateRoute";
-import AboutPage from "@/Page/AboutPage";
+import AboutPage from "@/Page/AboutPage/AboutPage";
 import BiodataDetailsPage from "@/Page/BiodataDetailsPage";
 import ContactPage from "@/Page/ContactPage";
 import ApprovedContactRequest from "@/Page/Dashboard/AdminHome/ApprovedContactRequest";
+import AllPayment from "@/Page/Dashboard/Payment/allPayment";
 import CheckoutPage from "@/Page/Dashboard/Payment/CheckoutPage";
 import PaymentHistory from "@/Page/Dashboard/Payment/PaymentHistory";
+import BillingSettings from "@/Page/Dashboard/Settings/BillingSettings";
+import NotificationSettings from "@/Page/Dashboard/Settings/NotificationSettings";
+import PasswordSettings from "@/Page/Dashboard/Settings/PasswordSettings";
+import Plan from "@/Page/Dashboard/Settings/Plan";
+import ProfileSettings from "@/Page/Dashboard/Settings/ProfileSettings";
+import SettingsLayout from "@/Page/Dashboard/Settings/SettingsLayout";
 import EditBiodataPage from "@/Page/Dashboard/UserHome/EditBiodataPage";
 import MyContactRequestPage from "@/Page/Dashboard/UserHome/MyContactRequestPage";
 import MyFavouritesPage from "@/Page/Dashboard/UserHome/MyFavouritesPage";
@@ -33,22 +40,10 @@ const router = createBrowserRouter(
       element: <MainLayout />,
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/about-us",
-          element: <AboutPage />,
-        },
-        {
-          path: "/contact-us",
-          element: <ContactPage />,
-        },
-        {
-          path: "/biodatas",
-          element: <AppSidebar />,
-        },
+        { path: "/", element: <Home /> },
+        { path: "/about-us", element: <AboutPage /> },
+        { path: "/contact-us", element: <ContactPage /> },
+        { path: "/biodatas", element: <AppSidebar /> },
         {
           path: "/biodata-details/:biodataId",
           element: (
@@ -57,29 +52,19 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(
-              `https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`
-            ),
+            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
         },
-        {
-          path: "/login",
-          element: <LoginPage />,
-        },
+        { path: "/login", element: <LoginPage /> },
         {
           path: "/membership-plans-page",
-          element:
+          element: (
             <PrivateRoute>
               <MembershipPlansPage />
             </PrivateRoute>
+          ),
         },
-        {
-          path: "/register",
-          element: <Register />,
-        },
-        {
-          path: "/up-coming-page",
-          element: <UpcomingPage />,
-        },
+        { path: "/register", element: <Register /> },
+        { path: "/up-coming-page", element: <UpcomingPage /> },
         {
           path: "/checkout/:biodataId",
           element: (
@@ -88,9 +73,7 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(
-              `https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`
-            ),
+            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
         },
       ],
     },
@@ -103,37 +86,71 @@ const router = createBrowserRouter(
       ),
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "userHome",
-          element: <UserHome />,
-        },
-        {
-          path: "editBiodata",
-          element: <EditBiodataPage />,
-        },
-        {
-          path: "viewBiodata",
-          element: <ViewBiodataPage />,
-        },
-        {
-          path: "myContactRequests",
-          element: <MyContactRequestPage />,
-        },
+        { path: "userHome", element: <UserHome /> },
+        { path: "editBiodata", element: <EditBiodataPage /> },
+        { path: "viewBiodata", element: <ViewBiodataPage /> },
+        { path: "myContactRequests", element: <MyContactRequestPage /> },
         {
           path: "favouritesBiodata",
           element: <MyFavouritesPage />,
-          loader: () =>
-            fetch("https://matrimony-nexus-server.vercel.app/biodatas"),
+          loader: () => fetch("https://matrimony-nexus-server.vercel.app/biodatas"),
         },
+        { path: "paymentHistory", element: <PaymentHistory /> },
+        { path: "GotMarried", element: <GotMarried /> },
         {
-          path: "paymentHistory",
-          element: <PaymentHistory />,
+          path: "settings",
+          element: <SettingsLayout />,
+          children: [
+            { path: "profile", element: <ProfileSettings /> },
+            { path: "password", element: <PasswordSettings /> },
+            { path: "billings", element: <BillingSettings /> },
+            { path: "notifications", element: <NotificationSettings /> },
+            { index: true, element: <ProfileSettings /> },
+            { path: "plan", element: <Plan /> },
+
+            // Admin Routes
+            {
+              path: "adminHome",
+              element: (
+                <AdminRoute>
+                  <AdminHome />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "manageUsers",
+              element: (
+                <AdminRoute>
+                  <ManageUsers />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "approvedPremium",
+              element: (
+                <AdminRoute>
+                  <ApprovedPremium />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "approvedContactRequests",
+              element: (
+                <AdminRoute>
+                  <ApprovedContactRequest />
+                </AdminRoute>
+              ),
+            },
+            {
+              path: "all-payment",
+              element: (
+                <AdminRoute>
+                  <AllPayment />
+                </AdminRoute>
+              ),
+            },
+          ],
         },
-        {
-          path: "GotMarried",
-          element: <GotMarried />,
-        },
-        // admin Route
         {
           path: "adminHome",
           element: (
@@ -167,19 +184,29 @@ const router = createBrowserRouter(
             </AdminRoute>
           ),
         },
+        {
+          path: "all-payment",
+          element: (
+            <AdminRoute>
+              <AllPayment />
+            </AdminRoute>
+          ),
+        }
+
       ],
+
+      future: {
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+        v7_fetcherPersist: true,
+        v7_normalizeFormMethod: true,
+        v7_partialHydration: true,
+        v7_skipActionErrorRevalidation: true,
+      },
     },
-  ],
-  {
-    future: {
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-    },
-  }
+  ]
 );
 
 export default router;
+
+

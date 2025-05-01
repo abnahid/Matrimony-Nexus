@@ -1,3 +1,4 @@
+import Header from "@/Components/Header";
 import { Button } from "@/Components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -21,56 +22,53 @@ const MyFavouritesPage = () => {
   const handleDelete = async (biodataId) => {
     const response = await axiosSecure.delete(`/favorites/${biodataId}`);
     if (response.data.success) {
-      // Update local state
       setFavorites((prevFavorites) =>
         prevFavorites.filter((favorite) => favorite.biodataId !== biodataId)
       );
       toast.success("Biodata removed from favorites.");
     } else {
-      throw new Error("Failed to delete favorite.");
+      toast.error("Failed to delete favorite.");
     }
   };
 
   return (
-    <div className="container mx-auto p-10 py-24">
-      <h2 className="text-3xl font-bold mb-6">My Favourites</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 p-4 text-left">Name</th>
-              <th className="border border-gray-300 p-4 text-left">
-                Biodata ID
-              </th>
-              <th className="border border-gray-300 p-4 text-left">
-                Permanent Address
-              </th>
-              <th className="border border-gray-300 p-4 text-left">
-                Occupation
-              </th>
-              <th className="border border-gray-300 p-4 text-center">Action</th>
+    <div className="container mx-auto p-6">
+      <Header
+        header={"My Favourites"}
+        title={
+          "Browse and manage your favourite profiles. Easily revisit the biodatas you've marked as preferred."
+        }
+
+      />
+
+      <div className="overflow-x-auto rounded-lg border border-gray-300 shadow bg-white">
+        <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+          <thead className="bg-gray-100 text-left font-semibold">
+            <tr>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Biodata ID</th>
+              <th className="px-6 py-3">Permanent Address</th>
+              <th className="px-6 py-3">Occupation</th>
+              <th className="px-6 py-3 text-center">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {favorites.length > 0 ? (
               favorites.map((favorite) => (
-                <tr key={favorite.biodataId}>
-                  <td className="border border-gray-300 p-4">
-                    {favorite.name || "N/A"}
-                  </td>
-                  <td className="border border-gray-300 p-4">
-                    {favorite.biodataId}
-                  </td>
-                  <td className="border border-gray-300 p-4">
+                <tr
+                  key={favorite.biodataId}
+                  className="hover:bg-gray-50 transition duration-150"
+                >
+                  <td className="px-6 py-4">{favorite.name || "N/A"}</td>
+                  <td className="px-6 py-4">{favorite.biodataId}</td>
+                  <td className="px-6 py-4">
                     {favorite.permanentDivision || "N/A"}
                   </td>
-                  <td className="border border-gray-300 p-4">
-                    {favorite.occupation || "N/A"}
-                  </td>
-                  <td className="border border-gray-300 p-4 text-center">
+                  <td className="px-6 py-4">{favorite.occupation || "N/A"}</td>
+                  <td className="px-6 py-4 text-center">
                     <Button
                       onClick={() => handleDelete(favorite.biodataId)}
-                      className="bg-red-500 text-white"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
                     >
                       Delete
                     </Button>
@@ -81,7 +79,7 @@ const MyFavouritesPage = () => {
               <tr>
                 <td
                   colSpan="5"
-                  className="border border-gray-300 p-4 text-center text-gray-500"
+                  className="px-6 py-6 text-center text-gray-500"
                 >
                   No favorites found.
                 </td>

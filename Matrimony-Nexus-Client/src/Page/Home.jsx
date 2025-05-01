@@ -1,3 +1,4 @@
+import BiodataShowcase from "@/Components/Home/BiodataShowcase";
 import CallToActionBanner from "@/Components/Home/CallToActionBanner";
 import FAQs from "@/Components/Home/FAQs";
 import MatrimonyBanner from "@/Components/Home/MatrimonyBanner";
@@ -10,6 +11,7 @@ const Home = () => {
     <div>
       <MatrimonyBanner />
       <BdMarriage />
+      <BiodataShowcase />
       <WhyChooseUs />
       <SuccessStoryCarousel />
       <div className="bg-white py-16">

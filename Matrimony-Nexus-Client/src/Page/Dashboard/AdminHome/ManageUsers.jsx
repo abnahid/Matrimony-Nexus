@@ -1,3 +1,4 @@
+import Header from "@/Components/Header";
 import { Button } from "@/Components/ui/button";
 import { Table } from "@/Components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -38,11 +39,18 @@ const ManageUsers = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Header
+        header={"Manage Users"}
+        title={
+          "Oversee user accounts, control access levels, and ensure platform integrity through effective user management."
+        }
+
+      />
       <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
       {isLoading ? (
         <p>Loading users...</p>
       ) : (
-        <Table className="bg-white shadow rounded-lg border">
+        <Table className="">
           <thead>
             <tr className="bg-gray-100">
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">

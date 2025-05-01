@@ -12,24 +12,28 @@ const useBiodatas = (currentPage, itemsPerPage, filters) => {
     const fetchBiodatas = async () => {
       setLoading(true);
       try {
-        const { gender, ageRange, heightRange, permanentDivision, biodataId } =
-          filters;
-        const [minAge, maxAge] = ageRange;
-        const [minHeight, maxHeight] = heightRange;
+        const { gender, ageRange, heightRange, permanentDivision, biodataId } = filters;
 
-        const response = await axiosPublic.get("/biodatas", {
-          params: {
-            page: currentPage,
-            limit: itemsPerPage,
-            gender,
-            minAge,
-            maxAge,
-            minHeight,
-            maxHeight,
-            permanentDivision,
-            biodataId,
-          },
-        });
+        const params = {
+          page: currentPage,
+          limit: itemsPerPage,
+        };
+
+        if (biodataId) {
+          params.biodataId = biodataId;
+        } else {
+          const [minAge, maxAge] = ageRange;
+          const [minHeight, maxHeight] = heightRange;
+
+          params.gender = gender;
+          params.minAge = minAge;
+          params.maxAge = maxAge;
+          params.minHeight = minHeight;
+          params.maxHeight = maxHeight;
+          params.permanentDivision = permanentDivision;
+        }
+
+        const response = await axiosPublic.get("/biodatas", { params });
 
         setBiodatas(response.data.data || []);
         setTotal(response.data.total || 0);

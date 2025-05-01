@@ -1,3 +1,4 @@
+import Header from "@/Components/Header";
 import { Button } from "@/Components/ui/button";
 import { AuthContext } from "@/context/AuthProvider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -35,49 +36,50 @@ const MyContactRequestPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-10 py-24">
-      <h2 className="text-3xl font-bold mb-6">My Contact Requests</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 p-4 text-left">Name</th>
-              <th className="border border-gray-300 p-4 text-left">
-                Biodata ID
-              </th>
-              <th className="border border-gray-300 p-4 text-left">Status</th>
-              <th className="border border-gray-300 p-4 text-left">
-                Mobile No
-              </th>
-              <th className="border border-gray-300 p-4 text-left">Email</th>
-              <th className="border border-gray-300 p-4 text-center">Action</th>
+    <div className="container mx-auto px-4 py-6">
+      <Header
+        header="My Contact Requests"
+        title="View and manage all the contact requests you've made or received. Stay connected and track your communication easily."
+      />
+
+      <div className="overflow-x-auto rounded-lg border border-gray-300 shadow bg-white mt-6">
+        <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+          <thead className="bg-gray-100 text-left text-sm font-semibold">
+            <tr>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Biodata ID</th>
+              <th className="px-6 py-3">Status</th>
+              <th className="px-6 py-3">Mobile No</th>
+              <th className="px-6 py-3">Email</th>
+              <th className="px-6 py-3 text-center">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {contactRequests.length > 0 ? (
               contactRequests.map((request) => (
-                <tr key={request._id}>
-                  <td className="border border-gray-300 p-4">{request.name}</td>
-                  <td className="border border-gray-300 p-4">
-                    {request.biodataId}
-                  </td>
-                  <td className="border border-gray-300 p-4">
+                <tr
+                  key={request._id}
+                  className="hover:bg-gray-50 transition duration-150"
+                >
+                  <td className="px-6 py-4">{request.name}</td>
+                  <td className="px-6 py-4">{request.biodataId}</td>
+                  <td className="px-6 py-4 capitalize">
                     {request.status === "approved" ? "Approved" : "Pending"}
                   </td>
-                  <td className="border border-gray-300 p-4">
+                  <td className="px-6 py-4">
                     {request.status === "approved"
                       ? request.mobileNumber || "N/A"
                       : "N/A"}
                   </td>
-                  <td className="border border-gray-300 p-4">
+                  <td className="px-6 py-4">
                     {request.status === "approved"
                       ? request.email || "N/A"
                       : "N/A"}
                   </td>
-                  <td className="border border-gray-300 p-4 text-center">
+                  <td className="px-6 py-4 text-center">
                     <Button
                       onClick={() => handleDelete(request._id)}
-                      className="bg-red-500 text-white"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
                     >
                       Delete
                     </Button>
@@ -88,7 +90,7 @@ const MyContactRequestPage = () => {
               <tr>
                 <td
                   colSpan="6"
-                  className="border border-gray-300 p-4 text-center text-gray-500"
+                  className="px-6 py-6 text-center text-gray-500"
                 >
                   No contact requests found.
                 </td>

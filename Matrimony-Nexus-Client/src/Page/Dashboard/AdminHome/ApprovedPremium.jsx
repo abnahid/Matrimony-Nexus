@@ -1,3 +1,4 @@
+import Header from "@/Components/Header";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/Components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
@@ -25,11 +26,17 @@ const ApprovedPremium = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Header
+        header={"Approved Premium"}
+        title={
+          "Review and manage all users with approved premium access to ensure continued premium service quality."
+        }
+      />
       <h2 className="text-2xl font-bold mb-4">Approved Premium Requests</h2>
       {isLoading ? (
         <p>Loading requests...</p>
       ) : requests.length > 0 ? (
-        <Table className="bg-white shadow rounded-lg border">
+        <Table className="">
           <thead>
             <tr className="bg-gray-100">
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">

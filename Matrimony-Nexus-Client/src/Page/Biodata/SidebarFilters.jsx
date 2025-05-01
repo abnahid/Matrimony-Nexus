@@ -1,153 +1,124 @@
-import { useState } from "react";
-import GenderFilter from "./Filter/GenderFilter";
-import RangeSlider from "./Filter/RangeSlide";
+import { useState } from 'react';
+import RangeSlider from './Filter/RangeSlide';
 
 const SidebarFilters = ({ onFiltersChange }) => {
-  const [gender, setGender] = useState("Male");
-  const [ageRange, setAgeRange] = useState([18, 50]);
-  const [heightRange, setHeightRange] = useState([125, 190]);
-  const [permanentDivision, setPermanentDivision] = useState("");
-  const [biodataId, setBiodataId] = useState("");
+  const defaultFilters = {
+    gender: "Male",
+    ageRange: [18, 35],
+    heightRange: [0, 190],
+    permanentDivision: "",
+    biodataId: "",
+  };
 
-  const divisions = [
-    "Dhaka",
-    "Chattogram",
-    "Rangpur",
-    "Barisal",
-    "Khulna",
-    "Mymensingh",
-    "Sylhet",
-  ];
+  const [filters, setFilters] = useState(defaultFilters);
 
   const handleGenderChange = (e) => {
-    const newGender = e.target.value;
-    setGender(newGender);
-    onFiltersChange({
-      gender: newGender,
-      ageRange,
-      heightRange,
-      permanentDivision,
-      biodataId,
-    });
+    setFilters({ ...filters, gender: e.target.value });
   };
 
   const handleAgeChange = (newAgeRange) => {
-    setAgeRange(newAgeRange);
-    onFiltersChange({
-      gender,
-      ageRange: newAgeRange,
-      heightRange,
-      permanentDivision,
-      biodataId,
-    });
+    setFilters({ ...filters, ageRange: newAgeRange });
   };
 
   const handleHeightChange = (newHeightRange) => {
-    setHeightRange(newHeightRange);
-    onFiltersChange({
-      gender,
-      ageRange,
-      heightRange: newHeightRange,
-      permanentDivision,
-      biodataId,
-    });
+    setFilters({ ...filters, heightRange: newHeightRange });
   };
 
-  const handleDivisionChange = (selectedDivision) => {
-    const newDivision =
-      permanentDivision === selectedDivision ? "" : selectedDivision;
-    setPermanentDivision(newDivision);
-    onFiltersChange({
-      gender,
-      ageRange,
-      heightRange,
-      permanentDivision: newDivision,
-      biodataId,
-    });
-  };
-
-  const handleAllDivisions = () => {
-    setPermanentDivision("");
-    onFiltersChange({
-      gender,
-      ageRange,
-      heightRange,
-      permanentDivision: "",
-      biodataId,
-    });
+  const handleDivisionChange = (e) => {
+    setFilters({ ...filters, permanentDivision: e.target.value });
   };
 
   const handleBiodataIdChange = (e) => {
-    const id = e.target.value;
-    setBiodataId(id);
-    onFiltersChange({
-      gender,
-      ageRange,
-      heightRange,
-      permanentDivision,
-      biodataId: id,
-    });
+    setFilters({ ...filters, biodataId: e.target.value });
+  };
+
+  const applyFilters = () => {
+    onFiltersChange(filters);
+  };
+
+  const clearFilters = () => {
+    setFilters(defaultFilters);
+    onFiltersChange(defaultFilters);
   };
 
   return (
     <div className="space-y-4">
+      {/* Gender Filter */}
       <div>
-        <label className="block font-medium mb-2">Search by Biodata ID</label>
+        <label className="block text-sm font-medium">Gender</label>
+        <select
+          value={filters.gender}
+          onChange={handleGenderChange}
+          className="w-full p-2 border rounded"
+        >
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      {/* Age Range Filter */}
+      <RangeSlider
+        label="Age Range"
+        min={0}
+        max={100}
+        values={filters.ageRange}
+        onChange={handleAgeChange}
+      />
+
+      {/* Height Range Filter */}
+      <RangeSlider
+        label="Height Range"
+        min={0}
+        max={250}
+        values={filters.heightRange}
+        onChange={handleHeightChange}
+      />
+
+      {/* Permanent Division Filter */}
+      <div>
+        <label className="block text-sm font-medium">Permanent Division</label>
+        <select
+          value={filters.permanentDivision}
+          onChange={handleDivisionChange}
+          className="w-full p-2 border rounded"
+        >
+          <option value="">Select Division</option>
+          <option value="Dhaka">Dhaka</option>
+          <option value="Chattagra">Chattagra</option>
+          <option value="Rangpur">Rangpur</option>
+          <option value="Barisal">Barisal</option>
+          <option value="Khulna">Khulna</option>
+          <option value="Mymensingh">Mymensingh</option>
+          <option value="Sylhet">Sylhet</option>
+        </select>
+      </div>
+
+      {/* Biodata ID Filter */}
+      <div>
+        <label className="block text-sm font-medium">Biodata ID</label>
         <input
           type="text"
-          value={biodataId}
+          value={filters.biodataId}
           onChange={handleBiodataIdChange}
-          placeholder="Enter Biodata ID"
-          className="w-full px-4 py-2 border rounded"
+          className="w-full p-2 border rounded"
         />
       </div>
 
-      <GenderFilter
-        selectedGender={gender}
-        onGenderChange={handleGenderChange}
-      />
-      <RangeSlider
-        label="Age"
-        min={16}
-        max={60}
-        values={ageRange}
-        onChange={handleAgeChange}
-      />
-      <RangeSlider
-        label="Height (cm)"
-        min={137}
-        max={190}
-        values={heightRange}
-        onChange={handleHeightChange}
-      />
-      <div>
-        <label className="block font-medium mb-2">Present Division</label>
-        <div className="flex flex-wrap gap-2">
-          <button
-            className={`px-4 py-2 rounded ${
-              permanentDivision === ""
-                ? "bg-custom-gradient text-white"
-                : "bg-gray-200"
-            }`}
-            onClick={handleAllDivisions}
-          >
-            All Divisions
-          </button>
-          {divisions.map((div) => (
-            <button
-              key={div}
-              className={`px-4 py-2 rounded ${
-                permanentDivision === div
-                  ? "bg-custom-gradient text-white"
-                  : "bg-gray-200"
-              }`}
-              onClick={() => handleDivisionChange(div)}
-            >
-              {div}
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Apply Filters Button */}
+      <button
+        onClick={applyFilters}
+        className="w-full py-2 bg-blue-500 text-white rounded"
+      >
+        Apply Filters
+      </button>
+
+      {/* Clear Filters Button */}
+      <button
+        onClick={clearFilters}
+        className="w-full py-2 bg-gray-500 text-white rounded mt-2"
+      >
+        Clear Filters
+      </button>
     </div>
   );
 };

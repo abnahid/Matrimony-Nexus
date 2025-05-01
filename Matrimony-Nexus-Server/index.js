@@ -5,7 +5,7 @@ const app = express();
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_TOKEN_SECRET);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5012;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // Middleware
@@ -101,11 +101,30 @@ async function run() {
 
       const query = { email: user.email };
       const existingUser = await usersCollection.findOne(query);
+
       if (existingUser) {
         return res.send({ message: "user already exists", insertedId: null });
       }
+
+      // Set default role if not provided
+      if (!user.role) {
+        user.role = "user";
+      }
+
       const result = await usersCollection.insertOne(user);
       res.send(result);
+    });
+
+    app.get("/recent-users", async (req, res) => {
+      try {
+        const cursor = usersCollection.find().sort({ date: -1 }).limit(4);
+
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+        res.status(500).send({ error: "Failed to fetch the users" });
+      }
     });
 
     app.get("/users/admin/:email", verifyToken, async (req, res) => {
@@ -124,7 +143,7 @@ async function run() {
       res.send({ admin });
     });
 
-    app.get("/users/:email", verifyToken, async (req, res) => {
+    app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
 
       const query = { email: email };
@@ -135,10 +154,23 @@ async function run() {
         return res.status(404).send({ message: "User not found" });
       }
 
-      res.send({
-        premium: user.premium || false,
-        approvedPremium: user.approvedPremium || false,
-      });
+      res.send(user);
+    });
+
+    app.patch("/users/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const updatedUser = req.body;
+
+      const filter = { email: email };
+      const updateDoc = {
+        $set: updatedUser,
+      };
+
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      if (result.matchedCount === 0) {
+        return res.status(404).send({ message: "User not found" });
+      }
+      res.send({ success: true, message: "User updated successfully" });
     });
 
     app.post("/users/premium-request", async (req, res) => {
@@ -321,12 +353,10 @@ async function run() {
         filters.contactEmail = email;
       }
 
-      // Gender filter
       if (gender) {
         filters.type = gender;
       }
 
-      // Age filter
       if (minAge && maxAge) {
         filters.age = { $gte: parseInt(minAge), $lte: parseInt(maxAge) };
       }
@@ -353,11 +383,7 @@ async function run() {
       }
 
       const total = await biodatasCollection.countDocuments(filters);
-      const result = await biodatasCollection
-        .find(filters)
-        .skip(skip)
-        .limit(limitNumber)
-        .toArray();
+      const result = await biodatasCollection.find(filters).skip(skip).limit(limitNumber).toArray();
 
       res.send({ data: result, total });
     });
@@ -421,11 +447,24 @@ async function run() {
       const updatedBiodata = req.body;
       const filter = { biodataId };
       const updateDoc = { $set: updatedBiodata };
+      delete updateDoc.$set._id;
       const result = await biodatasCollection.updateOne(filter, updateDoc);
 
       if (result.matchedCount === 0)
         return res.status(404).send({ message: "Biodata not found" });
       res.send({ success: true, message: "Biodata updated successfully" });
+    });
+
+    app.get("/recent-biodata", async (req, res) => {
+      try {
+        const cursor = biodatasCollection.find().sort({ date: -1 }).limit(4);
+
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+        res.status(500).send({ error: "Failed to fetch the orders" });
+      }
     });
 
     // favorites
@@ -506,6 +545,11 @@ async function run() {
       res.send({
         clientSecret: paymentIntent.client_secret,
       });
+    });
+
+    app.get("/payments", async (req, res) => {
+      const payments = await paymentCollection.find().toArray();
+      res.send(payments);
     });
 
     app.get("/payments/:email", verifyToken, async (req, res) => {

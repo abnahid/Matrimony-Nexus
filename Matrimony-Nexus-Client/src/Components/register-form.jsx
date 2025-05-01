@@ -66,6 +66,7 @@ export function RegisterForm({ className, ...props }) {
         const userInfo = {
           email: result.user?.email,
           name: result.user?.displayName,
+          photoUrl: result.user?.photoURL,
         };
         axiosPublic.post("/users", userInfo).then((res) => {
           navigate("/");
@@ -78,9 +79,11 @@ export function RegisterForm({ className, ...props }) {
     e.preventDefault();
     const form = new FormData(e.target);
     const name = form.get("name");
-    const photoUrl = form.get("photoUrl");
     const email = form.get("email");
     const password = form.get("password");
+
+    const photoUrl = "https://i.ibb.co/rQr6L83/default-avatar-icon-of-social-media-user-vector.jpg";
+    const createdAt = new Date().toISOString();
 
     if (name.length < 5) {
       setError({ ...error, name: "Name should be more than 5 characters" });
@@ -107,6 +110,8 @@ export function RegisterForm({ className, ...props }) {
             const userInfo = {
               name,
               email,
+              photoUrl,
+              createdAt,
             };
 
             axiosPublic.post("/users", userInfo).then((res) => {
@@ -133,6 +138,7 @@ export function RegisterForm({ className, ...props }) {
       });
   };
 
+
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
@@ -158,15 +164,7 @@ export function RegisterForm({ className, ...props }) {
             <label className="label text-sm text-red-500">{error.name}</label>
           )}
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="photoUrl">Photo URL</Label>
-          <Input
-            type="url"
-            name="photoUrl"
-            placeholder="Enter photo URL"
-            required
-          />
-        </div>
+
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -186,9 +184,8 @@ export function RegisterForm({ className, ...props }) {
               <HoverCardTrigger>
                 <IoMdInformationCircleOutline
                   size={20}
-                  className={`cursor-pointer  ${
-                    STRENGTH_CONFIG.colors[calculateStrength.score]
-                  } transition-all `}
+                  className={`cursor-pointer  ${STRENGTH_CONFIG.colors[calculateStrength.score]
+                    } transition-all `}
                 />
               </HoverCardTrigger>
               <HoverCardContent className="bg-background">
@@ -204,9 +201,8 @@ export function RegisterForm({ className, ...props }) {
                         />
                       )}
                       <span
-                        className={`text-xs ${
-                          req.met ? "text-emerald-600" : "text-muted-foreground"
-                        }`}
+                        className={`text-xs ${req.met ? "text-emerald-600" : "text-muted-foreground"
+                          }`}
                       >
                         {req.text}
                         <span className="sr-only">

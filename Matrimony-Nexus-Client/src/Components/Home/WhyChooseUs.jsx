@@ -2,6 +2,7 @@ import BannerImg from "@/assets/Home/banner.jpg";
 import { useState } from "react";
 import { FaCheckCircle, FaPlay } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const WhyChooseUs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,9 +47,11 @@ const WhyChooseUs = () => {
               Safe, secure, and culturally aligned platform
             </li>
           </ul>
-          <button className="mt-6 px-6 py-3 text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
-            Discover Your Match
-          </button>
+          <Link to="/biodatas">
+            <button className="mt-6 px-6 py-3 text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
+              Discover Your Match
+            </button>
+          </Link>
         </div>
 
         {/* Video/Image Section */}

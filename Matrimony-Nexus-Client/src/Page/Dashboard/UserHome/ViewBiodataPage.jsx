@@ -3,12 +3,14 @@ import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const ViewBiodataPage = () => {
   const [biodata, setBiodata] = useState(null);
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBiodata = async () => {
@@ -18,12 +20,13 @@ const ViewBiodataPage = () => {
       if (response.data.data.length > 0) {
         setBiodata(response.data.data[0]);
       } else {
-        toast.error("No biodata found.");
+        toast.error("No biodata found. Redirecting to create biodata...");
+        navigate("/dashboard/editBiodata"); // Redirect to the create biodata page
       }
     };
 
     fetchBiodata();
-  }, [user?.email, axiosSecure]);
+  }, [user?.email, axiosSecure, navigate]);
 
   const handleMakePremiumRequest = async () => {
     const { isConfirmed } = await Swal.fire({
@@ -69,14 +72,15 @@ const ViewBiodataPage = () => {
           {/* Biodata Details */}
           <div>
             {Object.entries({
-              "Biodata Type": biodata.biodataType,
-              Name: biodata.name,
+              "Biodata ID": biodata.biodataId,
+              "Biodata Type": biodata.type,
+              "Name": biodata.name,
               "Date of Birth": biodata.dateOfBirth,
-              Height: biodata.height,
-              Weight: biodata.weight,
-              Age: biodata.age,
-              Occupation: biodata.occupation,
-              Race: biodata.race,
+              "Height": biodata.height,
+              "Weight": biodata.weight,
+              "Age": biodata.age,
+              "Occupation": biodata.occupation,
+              "Race": biodata.race,
               "Father's Name": biodata.fathersName,
               "Mother's Name": biodata.mothersName,
               "Permanent Division": biodata.permanentDivision,
@@ -95,7 +99,7 @@ const ViewBiodataPage = () => {
           </div>
           <div>
             <img
-              src={biodata.profileImage}
+              src={biodata.profileImageLink}
               alt={biodata.name}
               className="w-64 h-64 object-cover rounded-lg"
             />
