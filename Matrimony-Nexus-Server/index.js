@@ -11,12 +11,62 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://matrimony-nexus.netlify.app"],
+    origin: ["https://matrimony-nexus.netlify.app", "http://localhost:5173"],
     credentials: true,
   })
 );
 
+
 app.use(express.json());
+
+
+app.post("/jwt", (req, res) => {
+  const user = req.body;
+  const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10h" });
+
+  // No cookies
+  res.send({ success: true, token });
+});
+
+// Middleware: verify token from Authorization header
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).send({ message: "unauthorized access" });
+  }
+
+  const token = authHeader.split(" ")[1]; // Expecting "Bearer <token>"
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "unauthorized access" });
+    }
+    req.decoded = decoded;
+    next();
+  });
+};
+
+// POST /logout - dummy endpoint if you're only using localStorage
+app.post("/logout", (req, res) => {
+  // On frontend: just remove localStorage token
+  res.send({ success: true, message: "Logged out" });
+});
+
+// use verify admin after verifyToken
+const verifyAdmin = async (req, res, next) => {
+  const email = req.decoded.email;
+
+  const query = { email: email };
+  const user = await usersCollection.findOne(query);
+
+  const isAdmin = user?.role === "admin";
+  if (!isAdmin) {
+    console.error("Access denied. User is not an admin.");
+    return res.status(403).send({ message: "forbidden access" });
+  }
+  next();
+};
+
 
 // MongoDB Connection URI
 const uri = `mongodb+srv://${process.env.MATRIMONY_IQ_USER}:${process.env.MATRIMONY_IQ_USER_PASS}@abnahid.cot7i.mongodb.net/?retryWrites=true&w=majority&appName=abnahid`;
@@ -52,44 +102,6 @@ async function run() {
       .db("matrimonyNexus")
       .collection("payments");
 
-    // jwt related api
-    app.post("/jwt", async (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "10h",
-      });
-      res.send({ token });
-    });
-
-    // middlewares
-    const verifyToken = (req, res, next) => {
-      if (!req.headers.authorization) {
-        return res.status(401).send({ message: "unauthorized access" });
-      }
-      const token = req.headers.authorization.split(" ")[1];
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-          return res.status(401).send({ message: "unauthorized access" });
-        }
-        req.decoded = decoded;
-        next();
-      });
-    };
-
-    // use verify admin after verifyToken
-    const verifyAdmin = async (req, res, next) => {
-      const email = req.decoded.email;
-
-      const query = { email: email };
-      const user = await usersCollection.findOne(query);
-
-      const isAdmin = user?.role === "admin";
-      if (!isAdmin) {
-        console.error("Access denied. User is not an admin.");
-        return res.status(403).send({ message: "forbidden access" });
-      }
-      next();
-    };
 
     app.get("/users", async (req, res) => {
       const result = await usersCollection.find().toArray();
@@ -157,21 +169,33 @@ async function run() {
       res.send(user);
     });
 
-    app.patch("/users/:email", verifyToken, async (req, res) => {
+    app.patch("/users/:email", async (req, res) => {
       const email = req.params.email;
       const updatedUser = req.body;
 
       const filter = { email: email };
       const updateDoc = {
-        $set: updatedUser,
+        $set: {}
       };
 
+      // Check each key in the updated user object
+      for (const [key, value] of Object.entries(updatedUser)) {
+        // Skip the _id field and any other fields you don't want to update
+        if (key !== '_id' && value !== undefined && value !== null) {
+          updateDoc.$set[key] = value;
+        }
+      }
+
       const result = await usersCollection.updateOne(filter, updateDoc);
+
       if (result.matchedCount === 0) {
         return res.status(404).send({ message: "User not found" });
       }
+
       res.send({ success: true, message: "User updated successfully" });
+
     });
+
 
     app.post("/users/premium-request", async (req, res) => {
       const { id } = req.body;
