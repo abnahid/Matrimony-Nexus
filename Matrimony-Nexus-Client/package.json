@@ -34,6 +34,7 @@
     "embla-carousel-react": "^8.5.2",
     "firebase": "^11.1.0",
     "html-react-parser": "^5.2.3",
+    "jspdf": "^3.0.1",
     "localforage": "^1.10.0",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.471.2",

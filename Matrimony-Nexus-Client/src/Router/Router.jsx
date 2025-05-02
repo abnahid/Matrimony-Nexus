@@ -13,6 +13,7 @@ import TermsAndConditions from "@/Page/Dashboard/Content/TermsAndConditions";
 import AllPayment from "@/Page/Dashboard/Payment/allPayment";
 import CheckoutPage from "@/Page/Dashboard/Payment/CheckoutPage";
 import PaymentHistory from "@/Page/Dashboard/Payment/PaymentHistory";
+import PaymentSuccess from "@/Page/Dashboard/Payment/PaymentSuccess";
 import BillingSettings from "@/Page/Dashboard/Settings/BillingSettings";
 import NotificationSettings from "@/Page/Dashboard/Settings/NotificationSettings";
 import PasswordSettings from "@/Page/Dashboard/Settings/PasswordSettings";
@@ -77,6 +78,12 @@ const router = createBrowserRouter(
         { path: "/help-and-support", element: <HelpAndSupport /> },
         { path: "/register", element: <Register /> },
         { path: "/up-coming-page", element: <UpcomingPage /> },
+        {
+          path: "payments/:transactionId",
+          element: <PaymentSuccess />,
+          loader: ({ params }) =>
+            fetch(`http://localhost:5012/payment/${params.transactionId}`),
+        },
         {
           path: "/checkout/:biodataId",
           element: (

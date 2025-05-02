@@ -12,7 +12,7 @@ const CheckoutPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 pt-32">
       <div className="max-w-5xl w-full bg-white shadow-md rounded-lg p-8 md:p-12">
         <h2 className="text-3xl font-bold mb-8 text-center">
-          Request Contact Information
+          Biodata Contact
         </h2>
         <div className="flex flex-col md:flex-row md:gap-8">
           <div className="flex-1 bg-gray-50 rounded-lg p-6 border">
@@ -26,7 +26,7 @@ const CheckoutPage = () => {
             {/* Price Section */}
             <div className="border-b pb-4 mb-4">
               <h2 className="text-4xl font-bold text-gray-800">$5</h2>
-              <p className="text-sm text-gray-600">Biodata Name: Sample Name</p>
+              <p className="text-sm text-gray-600">Biodata Name: Ahmed Farbi</p>
             </div>
 
             <div className="mb-4">

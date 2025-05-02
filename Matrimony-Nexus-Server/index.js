@@ -607,6 +607,24 @@ async function run() {
       }
     });
 
+    app.get("/payment/:transactionId", async (req, res) => {
+      const transactionId = req.params.transactionId;
+
+      try {
+        const query = { transactionId: transactionId };
+        const payment = await paymentCollection.findOne(query);
+
+        if (!payment) {
+          return res.status(404).send({ error: "Payment not found" });
+        }
+
+        res.send(payment);
+      } catch (err) {
+        console.error("Error fetching payment:", err);
+        res.status(500).send({ error: "Failed to fetch payment" });
+      }
+    });
+
     // Chart and Stats
     app.get("/dashboard/stats", async (req, res) => {
       const totalUsers = await usersCollection.countDocuments();

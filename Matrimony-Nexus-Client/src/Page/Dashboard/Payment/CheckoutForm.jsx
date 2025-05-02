@@ -2,6 +2,7 @@ import { AuthContext } from "@/context/AuthProvider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const CheckoutForm = ({ biodataId, planName, price }) => {
@@ -9,6 +10,7 @@ const CheckoutForm = ({ biodataId, planName, price }) => {
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate(); // For navigation
 
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -86,6 +88,8 @@ const CheckoutForm = ({ biodataId, planName, price }) => {
           text: `Your transaction ID: ${paymentIntent.id}`,
         });
 
+        // Navigate to the PaymentSuccess page with payment data
+        navigate(`/payments/${paymentIntent.id}`, { state: paymentData });
         setIsProcessing(false);
       }
     } catch (error) {
@@ -160,9 +164,8 @@ const CheckoutForm = ({ biodataId, planName, price }) => {
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        className={`w-full text-white py-2 rounded-lg ${
-          isProcessing ? "bg-gray-500 cursor-not-allowed" : "bg-custom-gradient"
-        } transition hover:bg-BgPrimary`}
+        className={`w-full text-white py-2 rounded-lg ${isProcessing ? "bg-gray-500 cursor-not-allowed" : "bg-custom-gradient"
+          } transition hover:bg-BgPrimary`}
       >
         {isProcessing ? "Processing..." : "Pay Now"}
       </button>
