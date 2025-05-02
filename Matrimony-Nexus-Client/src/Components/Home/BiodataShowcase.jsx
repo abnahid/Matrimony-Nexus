@@ -31,7 +31,7 @@ const BiodataShowcase = () => {
     console.log("Random Biodatas:", randomBiodatas); // Debugging
 
     return (
-        <div className="max-w-7xl mx-auto my-10">
+        <div className="max-w-7xl mx-auto my-10 px-6 md:px-0">
             <h2 className="text-3xl font-bold text-center mb-6">Biodata Showcase</h2>
 
             {loading ? (

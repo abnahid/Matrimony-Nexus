@@ -14,7 +14,7 @@ const Home = () => {
       <BiodataShowcase />
       <WhyChooseUs />
       <SuccessStoryCarousel />
-      <div className="bg-white py-16">
+      <div className="bg-white py-16 px-6 md:px-0">
         <CallToActionBanner />
       </div>
       <MembershipPlans />

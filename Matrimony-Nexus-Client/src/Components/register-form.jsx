@@ -63,17 +63,34 @@ export function RegisterForm({ className, ...props }) {
   const handleGoogle = () => {
     googleLogin()
       .then((result) => {
+        const email = result.user?.email;
+        const name = result.user?.displayName;
+        const photoUrl = result.user?.photoURL;
+
+        if (!email || !name) {
+          toast.error("Missing user info from Google");
+          return;
+        }
+
         const userInfo = {
-          email: result.user?.email,
-          name: result.user?.displayName,
-          photoUrl: result.user?.photoURL,
+          email,
+          name,
+          photoUrl,
+          createdAt: new Date().toISOString(),
         };
+
         axiosPublic.post("/users", userInfo).then((res) => {
-          navigate("/");
+          console.log("User POST response:", res.data);
+          if (res.data.insertedId || res.data.message === "user already exists") {
+            navigate("/");
+          } else {
+            toast.error("User not saved to DB");
+          }
         });
       })
       .catch((error) => toast.error(`Google Login Failed: ${error.message}`));
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

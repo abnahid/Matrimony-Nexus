@@ -75,5 +75,22 @@ export default {
 	plugins: [
 		require("tailwindcss-animate"),
 		require("daisyui")
-	]
+	],
+	daisyui: {
+		themes: [
+			{
+				mytheme: {
+					"primary": "#F1494C",       // same as BgPrimary
+					"secondary": "#c0272c",     // same as BgSecondary
+					"accent": "#A02C30",        // same as BgDarkAccent
+					"neutral": "#3F0E10",       // same as BgDarkSecondary
+					"base-100": "#ffffff",      // same as BgMainColor
+					"info": "#3ABFF8",
+					"success": "#36D399",
+					"warning": "#FBBD23",
+					"error": "#F87272",
+				},
+			},
+		],
+	},
 };

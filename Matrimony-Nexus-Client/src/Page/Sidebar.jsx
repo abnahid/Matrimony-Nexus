@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { BiCategory } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaHome } from "react-icons/fa";
-import { ImHammer2 } from "react-icons/im";
+import { HiOutlineBars3 } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
 import { NavLink } from "react-router-dom";
@@ -47,7 +47,7 @@ const Sidebar = () => {
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="lg:hidden fixed top-4 left-4 z-50 bg-gradient-to-br from-red-700 via-rose-500 to-rose-400 text-white p-3 rounded-full shadow-xl"
             >
-                <ImHammer2 size={20} />
+                <HiOutlineBars3 size={20} />
             </button>
 
             {/* Sidebar */}

@@ -107,7 +107,7 @@ const SidebarFilters = ({ onFiltersChange }) => {
       {/* Apply Filters Button */}
       <button
         onClick={applyFilters}
-        className="w-full py-2 bg-blue-500 text-white rounded"
+        className="w-full py-2 bg-BgPrimary text-white rounded"
       >
         Apply Filters
       </button>

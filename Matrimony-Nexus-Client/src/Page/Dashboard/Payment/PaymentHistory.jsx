@@ -1,8 +1,9 @@
 import Header from "@/Components/Header";
+import LottieLoding from "@/Components/LottieLoding";
 import { AuthContext } from "@/context/AuthProvider";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const PaymentHistory = () => {
@@ -22,16 +23,18 @@ const PaymentHistory = () => {
     },
   });
 
+  // Show error toast only when there's an error
+  useEffect(() => {
+    if (isError) {
+      toast.error("Failed to load payment history.");
+    }
+  }, [isError]);
+
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl font-semibold text-gray-600">Loading payment history...</p>
-      </div>
-    );
+    return <LottieLoding />;
   }
 
   if (isError) {
-    toast.error("Failed to load payment history.");
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-red-600 text-lg">
@@ -61,29 +64,35 @@ const PaymentHistory = () => {
           <tbody className="divide-y divide-gray-200">
             {payments.length > 0 ? (
               payments.map((payment, index) => {
+                if (!payment) return null; // skip undefined entries
+
+                const status = payment?.status || "pending";
                 const statusStyles =
-                  payment.status === "success"
+                  status === "completed"
                     ? "bg-green-500 text-white px-2 py-1 rounded text-xs"
                     : "bg-yellow-500 text-white px-2 py-1 rounded text-xs";
 
+                const formattedPrice = Number(payment?.price)?.toFixed(2) || "0.00";
+
                 return (
                   <tr
-                    key={payment._id}
-                    className={`hover:bg-gray-50 transition duration-150 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+                    key={payment._id || index}
+                    className={`hover:bg-gray-50 transition duration-150 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
                   >
                     <td className="px-6 py-4">{payment.email || "N/A"}</td>
                     <td className="px-6 py-4">{payment.biodataId || "N/A"}</td>
-                    <td className="px-6 py-4">${payment.price?.toFixed(2) || "0.00"}</td>
+                    <td className="px-6 py-4">${formattedPrice}</td>
                     <td className="px-6 py-4">
-                      <span className={statusStyles}>{payment.status}</span>
+                      <span className={statusStyles}>{status}</span>
                     </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan="4" className="px-6 py-6 text-center text-gray-500">
-                  No payments found.
+                <td colSpan="4" className="text-center py-4 text-gray-500">
+                  No payment records found.
                 </td>
               </tr>
             )}

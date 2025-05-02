@@ -1,5 +1,6 @@
 import { AuthContext } from "@/context/AuthProvider";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
+import imageCompression from "browser-image-compression";
 import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -16,6 +17,8 @@ const ProfileSettings = () => {
   const image_hosting_key = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
   const isDarkMode = false;
+  const [compressedImage, setCompressedImage] = useState(null);
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -56,6 +59,29 @@ const ProfileSettings = () => {
     }));
   };
 
+  const handleImageUpload = async (event) => {
+    const imageFile = event.target.files[0];
+    if (imageFile) {
+      try {
+        // Compress and convert the image to WebP
+        const options = {
+          maxSizeMB: 1, // Maximum size in MB
+          maxWidthOrHeight: 1024, // Maximum width or height
+          useWebWorker: true, // Use web worker for performance
+          fileType: "image/webp" // Convert the image to WebP format
+        };
+
+        const compressedFile = await imageCompression(imageFile, options);
+        setFormData((prevData) => ({
+          ...prevData,
+          photoFile: compressedFile, // Store the compressed WebP file
+        }));
+      } catch (error) {
+        console.error("Error compressing or converting image to WebP:", error);
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -79,10 +105,15 @@ const ProfileSettings = () => {
         }
       }
 
-      // Update Section Data
+      // Update data on the server
       const response = await axiosPublic.patch(`/users/${user.email}`, dataToUpdate);
 
-      setProfileData(response.data);
+      // Update local state with the updated data
+      setProfileData((prevData) => ({
+        ...prevData,
+        ...dataToUpdate,
+      }));
+
       Swal.fire("Success", "Profile updated successfully!", "success");
       closeModal();
     } catch (err) {
@@ -133,12 +164,12 @@ const ProfileSettings = () => {
             <div className="relative">
               {userPhoto ? (
                 <img
-                  src={userPhoto || "/placeholder.svg"}
+                  src={userPhoto || "https://avatar.iran.liara.run/public/20"}
                   alt="Profile"
                   className="h-32 w-32 rounded-full object-cover border-4 border-white shadow-md"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/150";
+                    e.target.src = "https://avatar.iran.liara.run/public/20";
                   }}
                 />
               ) : (
@@ -381,19 +412,45 @@ const ProfileSettings = () => {
             <h3 className="text-lg font-bold">Edit {activeSection} Information</h3>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               {activeSection === "photo" && (
-                <div>
+                <div className="space-y-4">
                   <label className="block text-sm font-medium">Upload Photo</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        photoFile: e.target.files[0],
-                      }))
-                    }
-                    className="input input-bordered w-full"
-                  />
+
+                  <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg flex flex-col items-center">
+                    {formData.photoFile ? (
+                      <div className="relative w-32 h-32 mb-3">
+                        <img
+                          src={URL.createObjectURL(formData.photoFile)}
+                          alt="Preview"
+                          className="object-cover w-full h-full rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, photoFile: null })}
+                          className="absolute top-0 right-0 bg-white rounded-full p-1 text-red-500"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-500">
+                        <p>Drag & drop an image or click to browse</p>
+                        <p className="text-xs">Supports jpg, png, jpeg, and converts to WebP</p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="photoUploadInput"
+                      onChange={handleImageUpload}
+                    />
+                    <label
+                      htmlFor="photoUploadInput"
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg cursor-pointer"
+                    >
+                      Upload Photo
+                    </label>
+                  </div>
                 </div>
               )}
               {activeSection === "personal" && (
@@ -415,7 +472,7 @@ const ProfileSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium ">Last Name</label>
+                    <label className="block text-sm font-medium">Last Name</label>
                     <input
                       type="text"
                       name="lastName"
@@ -440,29 +497,61 @@ const ProfileSettings = () => {
                       className="input input-bordered w-full bg-white"
                     />
                   </div>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium">Bio</label>
+                    <textarea
+                      name="bio"
+                      value={formData.bio || ""}
+                      onChange={handleChange}
+                      rows={4}
+                      className="textarea textarea-bordered w-full bg-white"
+                    ></textarea>
+                  </div>
                 </>
               )}
               {activeSection === "address" && (
                 <>
-                  <div>
-                    <label className="block text-sm font-medium">City</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city || ""}
-                      onChange={handleChange}
-                      className="input input-bordered w-full bg-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium">Country</label>
-                    <input
-                      type="text"
-                      name="country"
-                      value={formData.country || ""}
-                      onChange={handleChange}
-                      className="input input-bordered w-full bg-white"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium">City</label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={formData.city || ""}
+                        onChange={handleChange}
+                        className="input input-bordered w-full bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium">Country</label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={formData.country || ""}
+                        onChange={handleChange}
+                        className="input input-bordered w-full bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium">Postal Code</label>
+                      <input
+                        type="text"
+                        name="postalCode"
+                        value={formData.postalCode || ""}
+                        onChange={handleChange}
+                        className="input input-bordered w-full bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium">TAX ID</label>
+                      <input
+                        type="text"
+                        name="taxId"
+                        value={formData.taxId || ""}
+                        onChange={handleChange}
+                        className="input input-bordered w-full bg-white"
+                      />
+                    </div>
                   </div>
                 </>
               )}

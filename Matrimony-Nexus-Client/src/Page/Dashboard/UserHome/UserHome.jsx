@@ -56,18 +56,23 @@ const PaysDashboard = () => {
       </div>
 
       {/* Profile Info */}
-      <div className="px-6 -mt-20 mb-8">
+      <div className="px-6 -mt-12 mb-8">
         <div className="flex flex-col md:flex-row items-center gap-6 text-gray-900">
+          {/* Profile Image */}
           <div className="relative flex-shrink-0">
             <div
               className={`w-32 h-32 rounded-full border-4 ${userData.premium ? "border-yellow-500" : "border-white"
                 } bg-gray-200 overflow-hidden shadow-lg`}
             >
               <img
-                src={userData.photoUrl || "https://img.freepik.com/premium-vector/flat-businessman-character_33040-132.jpg"}
+                src={
+                  userData.photoUrl ||
+                  "https://img.freepik.com/premium-vector/flat-businessman-character_33040-132.jpg"
+                }
                 alt="Profile"
                 className="w-full h-full object-cover"
                 onError={(e) => {
+                  e.target.onerror = null;
                   e.target.src =
                     "https://img.freepik.com/premium-vector/flat-businessman-character_33040-132.jpg";
                 }}
@@ -75,21 +80,14 @@ const PaysDashboard = () => {
             </div>
           </div>
 
-          <div className="lg:text-left text-center w-full">
-            <h1 className="text-3xl font-bold">{userData.displayName || "No Name"}</h1>
-            <p className="text-gray-600 mt-2">
-              Email: {userData.email}
-              {userData.location && <span> • Location: {userData.location}</span>}
-            </p>
-            <p className="text-gray-600 mt-4 text-lg font-semibold">
-              {userData.name}
-            </p>
-
+          {/* Name and Premium Status */}
+          <div className="text-left  w-full z-10 mt-8">
+            <h1 className="text-3xl font-bold text-gray-500">{userData.displayName || userData.name || "No Name"}</h1>
             <p
-              className={`text-sm font-bold ${userData.premium ? "text-yellow-500" : "text-gray-500"
+              className={`text-sm font-bold mt-2 ${userData.premium ? "text-yellow-500" : "text-gray-500 "
                 }`}
             >
-              {userData.premium ? "Premium" : "Free"}
+              {userData.premium ? "Premium Member" : "Free Member"}
             </p>
           </div>
         </div>

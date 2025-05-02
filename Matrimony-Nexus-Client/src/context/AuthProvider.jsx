@@ -46,28 +46,28 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  // Observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
       if (currentUser) {
-        // get token and store client
         const userInfo = { email: currentUser.email };
         axiosPublic.post("/jwt", userInfo).then((res) => {
           if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
-            setLoading(false);
+            localStorage.setItem("accessToken", res.data.token); // Save token to localStorage
           }
+          setLoading(false);
         });
       } else {
-        localStorage.removeItem("access-token");
+        localStorage.removeItem("accessToken"); // Clear token on logout
+        setLoading(false);
       }
-      setLoading(false);
     });
-    return () => {
-      return unsubscribe();
-    };
+
+    return () => unsubscribe();
   }, [axiosPublic]);
+
+
 
   const authInfo = {
     createUser,

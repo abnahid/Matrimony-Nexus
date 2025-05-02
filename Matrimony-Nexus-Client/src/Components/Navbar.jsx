@@ -169,7 +169,7 @@ const Navbar = () => {
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link to="/up-coming-page" className="w-full text-left">
+                  <Link to="/help-and-support" className="w-full text-left">
                     Help & Support
                   </Link>
                 </DropdownMenuItem>

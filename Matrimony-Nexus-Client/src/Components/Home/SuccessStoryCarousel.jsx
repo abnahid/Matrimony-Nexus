@@ -28,6 +28,7 @@ const SuccessStoryCarousel = () => {
             slidesPerView={3}
             loop
             autoplay={{ delay: 3000 }}
+            className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {stories.map((story) => (
               <SwiperSlide key={story._id}>

@@ -4,6 +4,12 @@ import AboutPage from "@/Page/AboutPage/AboutPage";
 import BiodataDetailsPage from "@/Page/BiodataDetailsPage";
 import ContactPage from "@/Page/ContactPage";
 import ApprovedContactRequest from "@/Page/Dashboard/AdminHome/ApprovedContactRequest";
+import AffiliatesB2B from "@/Page/Dashboard/Content/AffiliatesB2B";
+import HelpAndSupport from "@/Page/Dashboard/Content/HelpAndSupport";
+import MissionVision from "@/Page/Dashboard/Content/MissionVision";
+import PrivacyPolicy from "@/Page/Dashboard/Content/PrivacyPolicy";
+import SitemapPage from "@/Page/Dashboard/Content/SitemapPage";
+import TermsAndConditions from "@/Page/Dashboard/Content/TermsAndConditions";
 import AllPayment from "@/Page/Dashboard/Payment/allPayment";
 import CheckoutPage from "@/Page/Dashboard/Payment/CheckoutPage";
 import PaymentHistory from "@/Page/Dashboard/Payment/PaymentHistory";
@@ -52,7 +58,7 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
+            fetch(`http://localhost:5012/biodatas/${params.biodataId}`),
         },
         { path: "/login", element: <LoginPage /> },
         {
@@ -63,6 +69,12 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
         },
+        { path: "/mission-vision", element: <MissionVision /> },
+        { path: "/affiliates-b2b", element: <AffiliatesB2B /> },
+        { path: "/privacy-policy", element: <PrivacyPolicy /> },
+        { path: "/terms-and-conditions", element: <TermsAndConditions /> },
+        { path: "/sitemap", element: <SitemapPage /> },
+        { path: "/help-and-support", element: <HelpAndSupport /> },
         { path: "/register", element: <Register /> },
         { path: "/up-coming-page", element: <UpcomingPage /> },
         {
@@ -73,7 +85,7 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
+            fetch(`http://localhost:5012/biodatas/${params.biodataId}`),
         },
       ],
     },
@@ -87,13 +99,14 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />,
       children: [
         { path: "userHome", element: <UserHome /> },
+
         { path: "editBiodata", element: <EditBiodataPage /> },
         { path: "viewBiodata", element: <ViewBiodataPage /> },
         { path: "myContactRequests", element: <MyContactRequestPage /> },
         {
           path: "favouritesBiodata",
           element: <MyFavouritesPage />,
-          loader: () => fetch("https://matrimony-nexus-server.vercel.app/biodatas"),
+          loader: () => fetch("http://localhost:5012/biodatas"),
         },
         { path: "paymentHistory", element: <PaymentHistory /> },
         { path: "GotMarried", element: <GotMarried /> },

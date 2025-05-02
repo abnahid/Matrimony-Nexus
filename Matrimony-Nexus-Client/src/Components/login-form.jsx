@@ -22,8 +22,7 @@ export function LoginForm({ className, ...props }) {
   const handleGoogle = () => {
     googleLogin()
       .then((result) => {
-        const user = result.user;
-        navigate(location?.state?.from || "/");
+        navigate("/");
       })
       .catch((error) => toast.error(`Google Login Failed: ${error.message}`));
   };

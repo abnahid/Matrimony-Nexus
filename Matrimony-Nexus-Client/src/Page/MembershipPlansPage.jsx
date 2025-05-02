@@ -13,22 +13,32 @@ const MembershipPlansPage = () => {
   const plans = [
     {
       name: "Basic",
-      price: 5.0,
-      features: ["Access limited profiles", "Basic support"],
+      price: 0.0,
+      features: [
+        "Create Profile",
+        "Search Matches",
+        "View Profiles",
+        "Limited Contact Access",
+      ],
     },
     {
       name: "Premium",
-      price: 15.0,
-      features: ["Access all profiles", "Priority support", "Enhanced search"],
+      price: 25.0,
+      features: [
+        "All Basic Features",
+        "Unlimited Contact Access",
+        "Priority Listing",
+        "Chat with Matches",
+      ],
     },
     {
       name: "Elite",
-      price: 30.0,
+      price: 50.0,
       features: [
-        "Access all profiles",
-        "Priority support",
-        "Enhanced search",
-        "Personalized matchmaking assistance",
+        "All Premium Features",
+        "Dedicated Matchmaker",
+        "Exclusive Matches",
+        "Personalized Support",
       ],
     },
   ];
@@ -38,30 +48,27 @@ const MembershipPlansPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 pt-32">
+    <div className=" flex items-center justify-center p-4 pt-20 bg-gray-50">
       <div className="max-w-5xl w-full rounded-lg p-8 md:p-12">
-        <h2 className="text-3xl font-bold mb-8 text-center">
-          Membership Plans
-        </h2>
+        <h2 className="text-3xl font-bold mb-8 text-center">Membership Plans</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`p-6 border rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all ${
-                selectedPlan?.name === plan.name
-                  ? "border-BgPrimary"
-                  : "border-gray-300"
-              }`}
+              className={`border bg-white shadow-md rounded-lg p-8 text-center cursor-pointer hover:shadow-lg transition-all ${selectedPlan?.name === plan.name
+                ? "border-BgPrimary"
+                : "border-gray-300"
+                }`}
               onClick={() => handlePlanSelect(plan)}
             >
-              <h3 className="text-xl font-semibold mb-4 text-center">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">
                 {plan.name} Plan
               </h3>
-              <p className="text-4xl font-bold text-center text-BgPrimary mb-4">
-                ${plan.price}
+              <p className="text-3xl font-bold text-BgPrimary mb-6">
+                {plan.price === 0 ? "Free" : `$${plan.price}/month`}
               </p>
-              <ul className="text-sm text-gray-600 mb-4">
+              <ul className="text-gray-600 mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-center">
                     <span className="mr-2 text-BgPrimary">&#10003;</span>
@@ -71,15 +78,16 @@ const MembershipPlansPage = () => {
               </ul>
               <div className="text-center">
                 <button
-                  className={`px-4 py-2 rounded-lg text-white transition-all ${
-                    selectedPlan?.name === plan.name
-                      ? "bg-BgPrimary hover:bg-indigo-700"
-                      : "bg-gray-400 cursor-not-allowed"
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-white transition-all ${selectedPlan?.name === plan.name
+                    ? "bg-BgPrimary hover:bg-indigo-700"
+                    : "bg-gray-400 cursor-not-allowed"
+                    }`}
                   disabled={selectedPlan?.name !== plan.name}
                 >
                   {selectedPlan?.name === plan.name
-                    ? "Selected"
+                    ? plan.price === 0
+                      ? "Get Started"
+                      : "Selected"
                     : "Select Plan"}
                 </button>
               </div>
@@ -87,8 +95,8 @@ const MembershipPlansPage = () => {
           ))}
         </div>
 
-        {selectedPlan && (
-          <div className="mt-8">
+        {selectedPlan && selectedPlan.price > 0 && (
+          <div className="mt-10">
             <h3 className="text-2xl font-semibold mb-4 text-center">
               Complete Your Payment for {selectedPlan.name} Plan
             </h3>
