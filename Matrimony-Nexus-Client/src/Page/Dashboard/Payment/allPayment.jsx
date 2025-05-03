@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import Header from "@/Components/Header";
-import useAxiosPublic from "@/hooks/useAxiosPublic";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useEffect, useState } from "react";
 
 const AllPayment = () => {
-    const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
 
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ const AllPayment = () => {
     useEffect(() => {
         const fetchPayments = async () => {
             try {
-                const response = await axiosPublic.get("/payments");
+                const response = await axiosSecure.get("/payments");
                 setPayments(response.data);
             } catch (err) {
                 setError("Failed to fetch payments. Please try again.");
@@ -24,7 +24,7 @@ const AllPayment = () => {
         };
 
         fetchPayments();
-    }, [axiosPublic]);
+    }, [axiosSecure]);
 
 
 

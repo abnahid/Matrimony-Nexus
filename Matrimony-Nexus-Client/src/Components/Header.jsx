@@ -7,7 +7,7 @@ const Header = ({ header, title }) => {
         <div
             className=" transition-colors duration-300 text-white "
         >
-            <div className="max-w-7xl mx-auto">
+            <div className=" mx-auto">
                 {/* Header Section with dynamic content */}
                 <div
                     className="relative overflow-hidden rounded-2xl mb-16 p-8 md:p-12 transition-all duration-700 transform"

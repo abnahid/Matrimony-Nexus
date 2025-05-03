@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const ProfileSettings = () => {
-  const { user } = useContext(AuthContext);
+  const { user, updateUserProfile } = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,7 +99,11 @@ const ProfileSettings = () => {
         });
 
         if (res.data.success) {
-          dataToUpdate.photo = res.data.data.display_url;
+          dataToUpdate.photoUrl = res.data.data.display_url;
+
+          await updateUserProfile(user, {
+            photoURL: res.data.data.display_url,
+          });
         } else {
           throw new Error("Image upload failed. Please try again.");
         }
@@ -410,13 +414,13 @@ const ProfileSettings = () => {
         <div className="modal modal-open">
           <div className="modal-box bg-gray-100"> {/* Added bg-white */}
             <h3 className="text-lg font-bold">Edit {activeSection} Information</h3>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <form onSubmit={handleSubmit} className="space-y-4 mt-4 ">
               {activeSection === "photo" && (
                 <div className="space-y-4">
                   <label className="block text-sm font-medium">Upload Photo</label>
 
                   <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg flex flex-col items-center">
-                    {formData.photoFile ? (
+                    {formData.photoFile && formData.photoFile instanceof Blob ? (
                       <div className="relative w-32 h-32 mb-3">
                         <img
                           src={URL.createObjectURL(formData.photoFile)}
@@ -565,10 +569,10 @@ const ProfileSettings = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div >
       )}
 
-    </div>
+    </div >
   )
 };
 export default ProfileSettings;

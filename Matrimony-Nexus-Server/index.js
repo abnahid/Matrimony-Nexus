@@ -576,13 +576,16 @@ async function run() {
       res.send(payments);
     });
 
-    app.get("/payments/:email", verifyToken, async (req, res) => {
+    app.get("/payments/:email", async (req, res) => {
+
       const query = { email: req.params.email };
-      if (req.params.email !== req.decoded.email) {
-        return res.status(403).send({ message: "forbidden access" });
+      try {
+        const result = await paymentCollection.find(query).toArray();
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Failed to fetch payment history" });
       }
-      const result = await paymentCollection.find(query).toArray();
-      res.send(result);
     });
 
     app.post("/payments", async (req, res) => {

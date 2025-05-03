@@ -1,15 +1,15 @@
-import useAxiosPublic from "@/hooks/useAxiosPublic";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const ResentUser = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axiosPublic.get("/recent-users");
+                const response = await axiosSecure.get("/recent-users");
                 setOrders(response.data);
                 setLoading(false);
             } catch (error) {

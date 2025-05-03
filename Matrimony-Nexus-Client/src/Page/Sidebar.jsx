@@ -5,7 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import useAdmin from "../hooks/useAdmin";
 
@@ -58,9 +58,11 @@ const Sidebar = () => {
                 <div className="flex flex-col h-full justify-between px-4 py-6">
                     {/* Logo */}
                     <div className="mb-6">
-                        <h1 className="text-xl font-bold p-3 text-center rounded-lg shadow-xl bg-white/10 text-white tracking-wide">
-                            Matrimony Nexus
-                        </h1>
+                        <Link to="/">
+                            <h1 className="text-xl font-bold p-3 text-center rounded-lg shadow-xl bg-white/10 text-white tracking-wide">
+                                Matrimony Nexus
+                            </h1>
+                        </Link>
                     </div>
 
                     {/* User Profile */}
@@ -88,7 +90,7 @@ const Sidebar = () => {
                                 <NavItem to="/dashboard/manageUsers" icon={IoChatbubbleEllipsesOutline} label="Manage Users" />
                                 <NavItem to="/dashboard/approvedContactRequests" icon={BiCategory} label="Approved Contact Requests" />
                                 <NavItem to="/dashboard/approvedPremium" icon={IoSettingsOutline} label="Approved Premium" />
-                                <NavItem to="/dashboard/all-payment" icon={BiCategory} label="Manage Premium" />
+                                <NavItem to="/dashboard/all-payment" icon={BiCategory} label="Manage Payment" />
                             </>
                         ) : (
                             <>
