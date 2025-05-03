@@ -1,4 +1,7 @@
+import ThemeContext from "@/context/ThemeContext";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+
 const BiodataCard = ({ biodata }) => {
   const {
     biodataId,
@@ -12,8 +15,13 @@ const BiodataCard = ({ biodata }) => {
     occupation,
   } = biodata;
 
+  const { isDarkMode } = useContext(ThemeContext);
+
   return (
-    <div className="border rounded-lg p-4 shadow-md bg-white w-full mx-auto flex flex-col justify-between">
+    <div
+      className={`border rounded-lg p-4 shadow-md w-full mx-auto flex flex-col justify-between ${isDarkMode ? "bg-gray-800 text-gray-200" : "bg-white text-gray-900"
+        }`}
+    >
       {/* Profile Section */}
       <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         {/* Profile Image */}
@@ -25,7 +33,12 @@ const BiodataCard = ({ biodata }) => {
         {/* Basic Info */}
         <div className="text-center sm:text-left mt-4 sm:mt-0">
           <h2 className="text-lg font-bold">{name}</h2>
-          <p className="text-sm text-gray-500">Biodata No: {biodataId}</p>
+          <p
+            className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+          >
+            Biodata No: {biodataId}
+          </p>
         </div>
       </div>
 
@@ -54,7 +67,10 @@ const BiodataCard = ({ biodata }) => {
       {/* Action Buttons */}
       <div className="mt-4">
         <Link to={`/biodata-details/${biodataId}`}>
-          <button className="px-4 py-2 w-full text-white bg-red-400 rounded hover:bg-BgPrimary transition ">
+          <button
+            className={`px-4 py-2 w-full rounded hover:bg-BgPrimary transition ${isDarkMode ? "text-gray-200 bg-red-500" : "text-white bg-red-400"
+              }`}
+          >
             View Profile
           </button>
         </Link>

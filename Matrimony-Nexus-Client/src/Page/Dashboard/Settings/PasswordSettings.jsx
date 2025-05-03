@@ -1,15 +1,17 @@
+import ThemeContext from "@/context/ThemeContext";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 const PasswordSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordChanged, setPasswordChanged] = useState(false);
-  const isDarkMode = false;
+  const { isDarkMode } = useContext(ThemeContext);
+
 
   // password reset function
   const handleSubmit = async (e) => {

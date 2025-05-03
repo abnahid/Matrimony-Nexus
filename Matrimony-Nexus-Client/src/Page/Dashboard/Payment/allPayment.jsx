@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import Header from "@/Components/Header";
+import ThemeContext from "@/context/ThemeContext";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const AllPayment = () => {
     const axiosSecure = useAxiosSecure();
-
+    const { isDarkMode } = useContext(ThemeContext);
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -30,45 +31,65 @@ const AllPayment = () => {
 
     // Render table
     return (
-        <div className="p-6">
+        <div className={`p-6 ${isDarkMode ? "text-gray-100" : "text-gray-800"}`}>
             <Header
-                header={"Payment History"}
-                title={
-                    "Review all past transactions, track payment statuses, and maintain clear financial records."
-                }
-
+                header="Payment History"
+                title="Review all past transactions, track payment statuses, and maintain clear financial records."
             />
-            <h1 className="text-2xl font-bold mb-6 text-Primary">Payment History</h1>
+            <h1 className={`text-2xl font-bold mb-6 ${isDarkMode ? "text-white" : "text-Primary"}`}>
+                Payment History
+            </h1>
+
             {loading ? (
                 <p>Loading payments...</p>
             ) : error ? (
                 <p className="text-red-500">{error}</p>
             ) : (
-                <div className="overflow-x-auto rounded-lg border border-gray-300 shadow-sm bg-white p-4">
-                    <table className="table w-full">
-                        <thead>
+                <div
+                    className={`overflow-x-auto rounded-lg border shadow-sm p-4 ${isDarkMode
+                        ? "border-BgDarkAccent bg-BgDarkPrimary"
+                        : "border-gray-300 bg-white"
+                        }`}
+                >
+                    <table className={`table w-full ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
+                        <thead
+                            className={`${isDarkMode ? "bg-BgDarkSecondary text-white" : "bg-gray-100 text-BgPrimary"
+                                }`}
+                        >
                             <tr>
-                                <th className="text-BgPrimary">#</th>
-                                <th className="text-BgPrimary">Biodata ID</th>
-                                <th className="text-BgPrimary">Transaction ID</th>
-                                <th className="text-BgPrimary">Customer Email</th>
-                                <th className="text-BgPrimary">Amount</th>
-                                <th className="text-BgPrimary">Status</th>
+                                <th>#</th>
+                                <th>Biodata ID</th>
+                                <th>Transaction ID</th>
+                                <th>Customer Email</th>
+                                <th>Amount</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {payments.map((payment, index) => (
-                                <tr key={payment.transactionId}>
-                                    <th>{index + 1}</th>
-                                    <td>{payment.biodataId}</td>
-                                    <td>{payment.transactionId}</td>
-                                    <td>{payment.email || "N/A"}</td>
-                                    <td>{payment.price}</td>
+                            {payments.map((payment, index) => {
+                                const rowBg =
+                                    isDarkMode && index % 2 === 1 ? "bg-BgDarkAccent" : isDarkMode ? "bg-BgDarkSecondary" : "";
 
-                                    <td>{payment.status}</td>
-
-                                </tr>
-                            ))}
+                                return (
+                                    <tr key={payment.transactionId} className={rowBg}>
+                                        <th>{index + 1}</th>
+                                        <td>{payment.biodataId}</td>
+                                        <td>{payment.transactionId}</td>
+                                        <td>{payment.email || "N/A"}</td>
+                                        <td>${Number(payment.price).toFixed(2)}</td>
+                                        <td>
+                                            <span
+                                                className={`px-2 py-1 rounded text-xs ${payment.status === "completed"
+                                                    ? "bg-green-500 text-white"
+                                                    : "bg-yellow-500 text-white"
+                                                    }`}
+                                            >
+                                                {payment.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -76,5 +97,6 @@ const AllPayment = () => {
         </div>
     );
 };
+
 
 export default AllPayment;

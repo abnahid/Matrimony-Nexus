@@ -59,7 +59,7 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(`http://localhost:5012/biodatas/${params.biodataId}`),
+            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
         },
         { path: "/login", element: <LoginPage /> },
         {
@@ -82,7 +82,7 @@ const router = createBrowserRouter(
           path: "payments/:transactionId",
           element: <PaymentSuccess />,
           loader: ({ params }) =>
-            fetch(`http://localhost:5012/payment/${params.transactionId}`),
+            fetch(`https://matrimony-nexus-server.vercel.app/payment/${params.transactionId}`),
         },
         {
           path: "/checkout/:biodataId",
@@ -92,7 +92,7 @@ const router = createBrowserRouter(
             </PrivateRoute>
           ),
           loader: ({ params }) =>
-            fetch(`http://localhost:5012/biodatas/${params.biodataId}`),
+            fetch(`https://matrimony-nexus-server.vercel.app/biodatas/${params.biodataId}`),
         },
       ],
     },
@@ -113,7 +113,7 @@ const router = createBrowserRouter(
         {
           path: "favouritesBiodata",
           element: <MyFavouritesPage />,
-          loader: () => fetch("http://localhost:5012/biodatas"),
+          loader: () => fetch("https://matrimony-nexus-server.vercel.app/biodatas"),
         },
         { path: "paymentHistory", element: <PaymentHistory /> },
         { path: "GotMarried", element: <GotMarried /> },

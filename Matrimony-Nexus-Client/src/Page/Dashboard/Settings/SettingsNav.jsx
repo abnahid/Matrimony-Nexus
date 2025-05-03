@@ -1,7 +1,10 @@
+import ThemeContext from '@/context/ThemeContext';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const SettingsNav = () => {
-    const { isDarkMode } = false;
+    const { isDarkMode } = useContext(ThemeContext);
+
 
     return (
         <div className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>

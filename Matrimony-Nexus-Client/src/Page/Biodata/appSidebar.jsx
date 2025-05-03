@@ -1,4 +1,5 @@
-import { useState } from "react";
+import ThemeContext from "@/context/ThemeContext";
+import { useContext, useState } from "react";
 import BiodataList from "./BiodataList";
 import SidebarFilters from "./SidebarFilters";
 
@@ -12,6 +13,7 @@ const AppSidebar = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
+  const { isDarkMode } = useContext(ThemeContext);
 
   // This function handles filter changes from SidebarFilters
   const handleFiltersChange = (newFilters) => {
@@ -20,11 +22,21 @@ const AppSidebar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className={`min-h-screen ${isDarkMode ? "bg-gray-800 text-gray-200" : "bg-gray-50 text-gray-900"
+        }`}
+    >
       <div className="flex flex-col lg:flex-row py-24 px-4 lg:px-12">
-        {/* Sidebar */}
-        <div className="w-full lg:w-[25%] p-4 bg-gray-100 border-r mb-6 lg:mb-0">
-          <SidebarFilters onFiltersChange={handleFiltersChange} />
+        <div className="w-full lg:w-[25%] px-4 border-r mb-6 lg:mb-0">
+          {/* Sidebar */}
+          <div
+            className={`p-6 rounded-lg border shadow ${isDarkMode
+              ? "bg-gray-700 border-gray-600"
+              : "bg-gray-100 border-gray-300"
+              }`}
+          >
+            <SidebarFilters onFiltersChange={handleFiltersChange} />
+          </div>
         </div>
 
         {/* Main Content */}

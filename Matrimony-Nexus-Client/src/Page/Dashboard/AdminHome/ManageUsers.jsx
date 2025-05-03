@@ -1,11 +1,14 @@
 import Header from "@/Components/Header";
 import { Button } from "@/Components/ui/button";
 import { Table } from "@/Components/ui/table";
+import ThemeContext from "@/context/ThemeContext";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
+  const { isDarkMode } = useContext(ThemeContext);
 
   const {
     data: users = [],
@@ -50,16 +53,19 @@ const ManageUsers = () => {
       {isLoading ? (
         <p>Loading users...</p>
       ) : (
-        <Table className="">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+        <Table className={` ${isDarkMode ? "bg-BgDarkSecondary text-gray-300" : "border-gray-300 bg-white"}`}>
+          <thead className={`overflow-x-auto rounded-lg border shadow ${isDarkMode
+            ? "border-BgDarkAccent bg-BgDarkPrimary"
+            : "border-gray-300 bg-white"
+            }`}>
+            <tr className="">
+              <th className="px-6 py-3">
                 Name
               </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+              <th className="px-6 py-3">
                 Email
               </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+              <th className="px-6 py-3">
                 Role
               </th>
               <th className="px-4 py-2 text-center text-sm font-semibold text-gray-600">

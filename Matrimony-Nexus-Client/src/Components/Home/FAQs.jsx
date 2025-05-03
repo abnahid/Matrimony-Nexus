@@ -1,8 +1,10 @@
+import ThemeContext from "@/context/ThemeContext";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const FAQs = () => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const { isDarkMode } = useContext(ThemeContext);
 
   const questionsAnswers = [
     {
@@ -37,30 +39,40 @@ const FAQs = () => {
   };
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container max-w-7xl mx-auto px-8 ">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <section
+      className={`py-16 ${isDarkMode ? " text-gray-200" : "bg-white text-gray-800"
+        }`}
+    >
+      <div className="container max-w-7xl mx-auto px-8">
+        <h2 className="text-4xl font-bold text-center mb-8">
           Frequently Asked Questions
         </h2>
         <div className="space-y-4">
           {questionsAnswers.map((item, index) => (
             <div
               key={index}
-              className="bg-white shadow-md rounded-lg p-4 border"
+              className={`shadow-md rounded-lg p-4 border ${isDarkMode ? "bg-BgDarkSecondary border-gray-700" : "bg-white"
+                }`}
             >
               <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => toggleAnswer(index)}
               >
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold">
                   {item.question}
                 </h3>
-                <span className="text-gray-600">
-                  {activeIndex === index ? <ChevronDown /> : <ChevronRight />}
+                <span>
+                  {activeIndex === index ? (
+                    <ChevronDown className={isDarkMode ? "text-gray-400" : "text-gray-600"} />
+                  ) : (
+                    <ChevronRight className={isDarkMode ? "text-gray-400" : "text-gray-600"} />
+                  )}
                 </span>
               </div>
               {activeIndex === index && (
-                <p className="mt-4 text-gray-600">{item.answer}</p>
+                <p className={`mt-4 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {item.answer}
+                </p>
               )}
             </div>
           ))}

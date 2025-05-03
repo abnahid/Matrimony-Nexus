@@ -1,5 +1,6 @@
 import Header from "@/Components/Header";
 import { AuthContext } from "@/context/AuthProvider";
+import ThemeContext from "@/context/ThemeContext";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useContext, useEffect, useState } from "react";
@@ -11,6 +12,7 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
   const { user } = useContext(AuthContext);
   const image_hosting_key = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+  const { isDarkMode } = useContext(ThemeContext);
 
   const [biodata, setBiodata] = useState({
     type: "",
@@ -130,7 +132,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
   };
 
   return (
-    <div className="p-6">
+    <div className={`p-6 ${isDarkMode ? 'bg-BgDarkPrimary text-white' : 'bg-white text-black'}`}>
+
       <Header
         header={existingBiodata ? "Edit Your Biodata" : "Create Your Biodata"}
         title={
@@ -144,8 +147,10 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
         {/* Form Section */}
         <form
           onSubmit={onSubmit}
-          className="col-span-2 bg-gray-100 p-6 rounded-lg shadow-md space-y-6"
+          className={`col-span-2 p-6 rounded-lg shadow-md space-y-6 ${isDarkMode ? 'bg-BgDarkSecondary text-white' : 'bg-gray-100 text-black'
+            }`}
         >
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Biodata Type */}
             <div>
@@ -154,7 +159,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 name="type"
                 value={biodata.type}
                 onChange={handleChange}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
                 required
               >
                 <option value="Male">Male</option>
@@ -171,7 +177,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.name}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -184,7 +191,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 required
                 value={biodata.dateOfBirth}
                 onChange={handleChange}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -197,7 +205,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 required
                 value={biodata.age}
                 onChange={handleChange}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -210,7 +219,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.occupation}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -229,7 +239,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                   min="0"
                   max="9"
                   required
-                  className="w-1/2 p-2 bg-white border rounded"
+                  className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                    }`}
                 />
                 <input
                   type="number"
@@ -242,7 +253,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                   min="0"
                   max="11"
                   required
-                  className="w-1/2 p-2 bg-white border rounded"
+                  className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                    }`}
                 />
               </div>
             </div>
@@ -255,7 +267,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 required
                 value={biodata.mobileNumber}
                 onChange={handleChange}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -266,7 +279,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 name="contactEmail"
                 value={biodata.contactEmail}
                 disabled
-                className="w-full p-2 border rounded bg-white"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -279,7 +293,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 required
                 value={biodata.permanentDivision}
                 onChange={handleChange}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="Dhaka">Dhaka</option>
                 <option value="Chattagra">Chattagra</option>
@@ -299,7 +314,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.presentDivision}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="Dhaka">Dhaka</option>
                 <option value="Chattagra">Chattagra</option>
@@ -318,7 +334,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.weight}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border rounded bg-white"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
             <div>
@@ -328,7 +345,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.race}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border rounded bg-white"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="">Select Skin Color</option>
                 <option value="Fair">Fair</option>
@@ -347,7 +365,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.fathersName}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border rounded bg-white"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -359,7 +378,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.mothersName}
                 onChange={handleChange}
                 required
-                className="w-full p-2 border rounded bg-white"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -370,7 +390,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.expectedPartnerAge}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="20-24">20-24</option>
                 <option value="24-28">24-28</option>
@@ -388,7 +409,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.expectedPartnerHeight}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="Below 5 feet">Below 5 feet</option>
                 <option value="5'0&quot;-5'3&quot;">5'0"-5'3"</option>
@@ -407,7 +429,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 value={biodata.expectedPartnerWeight}
                 onChange={handleChange}
                 required
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               >
                 <option value="Below 45 kg">Below 45 kg</option>
                 <option value="45-50 kg">45-50 kg</option>
@@ -435,7 +458,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
         </form>
 
         {/* Right Section */}
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+        <div className={`${isDarkMode ? 'bg-BgDarkSecondary text-white' : 'bg-gray-100 text-black'} p-6 rounded-lg shadow-md`}>
+
           <h3 className="text-lg font-bold mb-4">Upload Profile Image</h3>
           <div className="space-y-4">
             <div>
@@ -450,7 +474,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                     setBiodata({ ...biodata, profileImageLink: generatedUrl });
                   }
                 }}
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 
@@ -463,7 +488,8 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
                 onChange={(e) =>
                   setBiodata({ ...biodata, profileImageLink: e.target.value })
                 }
-                className="w-full p-2 bg-white border rounded"
+                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                  }`}
               />
             </div>
 

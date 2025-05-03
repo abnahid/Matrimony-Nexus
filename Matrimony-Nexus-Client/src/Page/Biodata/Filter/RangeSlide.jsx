@@ -1,5 +1,9 @@
+import ThemeContext from "@/context/ThemeContext";
+import { useContext } from "react";
+
 const RangeSlider = ({ label, min, max, values, onChange }) => {
   const [minValue, maxValue] = values; // Destructure the current range values
+  const { isDarkMode } = useContext(ThemeContext);
 
   const handleRangeChange = (e) => {
     const newValue = parseInt(e.target.value);
@@ -15,7 +19,10 @@ const RangeSlider = ({ label, min, max, values, onChange }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg bg-white shadow">
+    <div
+      className={`p-4 border rounded-lg shadow ${isDarkMode ? "bg-gray-800 text-gray-200 border-gray-600" : "bg-white text-gray-900"
+        }`}
+    >
       <h3 className="text-lg font-semibold mb-2">{label}</h3>
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm">{minValue}</span>
@@ -27,7 +34,8 @@ const RangeSlider = ({ label, min, max, values, onChange }) => {
         max={max}
         value={minValue}
         onChange={handleRangeChange}
-        className="w-full accent-blue-500"
+        className={"w-full accent-BgPrimary"
+        }
       />
     </div>
   );

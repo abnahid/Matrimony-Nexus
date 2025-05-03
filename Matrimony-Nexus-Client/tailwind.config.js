@@ -16,9 +16,9 @@ export default {
 				BgPrimary: '#F1494C',
 				BgSecondary: '#c0272c',
 				BgMainColor: '#ffffff',
-				BgDarkPrimary: '#6E181B',
-				BgDarkSecondary: '#3F0E10',
-				BgDarkAccent: '#A02C30',
+				BgDarkPrimary: '#1e1e2f',
+				BgDarkSecondary: '#2a2a40',
+				BgDarkAccent: '#3d3d5c',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {

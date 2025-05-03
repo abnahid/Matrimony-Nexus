@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import ThemeContext from '@/context/ThemeContext';
+import { useContext, useState } from 'react';
 import { FaCreditCard, FaPlus, FaRegTrashAlt } from 'react-icons/fa';
 
 const BillingSettings = () => {
@@ -21,7 +22,7 @@ const BillingSettings = () => {
         cvv: '',
         type: 'VISA'
     });
-    const { isDarkMode } = false;
+    const { isDarkMode } = useContext(ThemeContext);
 
     const handleAddCard = () => {
         if (newCard.name && newCard.number && newCard.expiry && newCard.cvv) {

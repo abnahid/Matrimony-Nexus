@@ -1,4 +1,5 @@
 import { AuthContext } from "@/context/AuthProvider";
+import ThemeContext from "@/context/ThemeContext";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import imageCompression from "browser-image-compression";
 import { useContext, useEffect, useState } from "react";
@@ -16,7 +17,8 @@ const ProfileSettings = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const image_hosting_key = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-  const isDarkMode = false;
+  const { isDarkMode } = useContext(ThemeContext);
+
   const [compressedImage, setCompressedImage] = useState(null);
 
 
@@ -133,7 +135,7 @@ const ProfileSettings = () => {
   if (!profileData) return <div className="p-4">No profile data found</div>;
 
   const userData = profileData;
-  const userPhoto = userData?.photoUrl || user?.photo;
+  const userPhoto = userData?.photoUrl || user?.photoURL;
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
@@ -411,8 +413,16 @@ const ProfileSettings = () => {
       </div>
 
       {isOpen && (
-        <div className="modal modal-open">
-          <div className="modal-box bg-gray-100"> {/* Added bg-white */}
+        <div
+          className={`modal modal-open ${isDarkMode ? "bg-BgDarkPrimary/80" : "bg-gray-500/80"
+            }`}
+        >
+          <div
+            className={`modal-box ${isDarkMode
+              ? "bg-BgDarkSecondary text-gray-300 border border-BgDarkAccent"
+              : "bg-white text-gray-800 border border-gray-300"
+              }`}
+          > {/* Added bg-white */}
             <h3 className="text-lg font-bold">Edit {activeSection} Information</h3>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4 ">
               {activeSection === "photo" && (
@@ -472,7 +482,8 @@ const ProfileSettings = () => {
                           name: `${e.target.value} ${lastName}`,
                         }));
                       }}
-                      className="input input-bordered w-full bg-white"
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                        }`}
                     />
                   </div>
                   <div>
@@ -488,7 +499,8 @@ const ProfileSettings = () => {
                           name: `${firstName} ${e.target.value}`,
                         }));
                       }}
-                      className="input input-bordered w-full bg-white"
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                        }`}
                     />
                   </div>
                   <div>
@@ -498,7 +510,8 @@ const ProfileSettings = () => {
                       name="phone"
                       value={formData.phone || ""}
                       onChange={handleChange}
-                      className="input input-bordered w-full bg-white"
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                        }`}
                     />
                   </div>
                   <div className="col-span-2">
@@ -508,7 +521,8 @@ const ProfileSettings = () => {
                       value={formData.bio || ""}
                       onChange={handleChange}
                       rows={4}
-                      className="textarea textarea-bordered w-full bg-white"
+                      className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                        }`}
                     ></textarea>
                   </div>
                 </>
@@ -523,7 +537,8 @@ const ProfileSettings = () => {
                         name="city"
                         value={formData.city || ""}
                         onChange={handleChange}
-                        className="input input-bordered w-full bg-white"
+                        className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                          }`}
                       />
                     </div>
                     <div>
@@ -533,7 +548,8 @@ const ProfileSettings = () => {
                         name="country"
                         value={formData.country || ""}
                         onChange={handleChange}
-                        className="input input-bordered w-full bg-white"
+                        className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                          }`}
                       />
                     </div>
                     <div>
@@ -543,7 +559,8 @@ const ProfileSettings = () => {
                         name="postalCode"
                         value={formData.postalCode || ""}
                         onChange={handleChange}
-                        className="input input-bordered w-full bg-white"
+                        className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                          }`}
                       />
                     </div>
                     <div>
@@ -553,7 +570,8 @@ const ProfileSettings = () => {
                         name="taxId"
                         value={formData.taxId || ""}
                         onChange={handleChange}
-                        className="input input-bordered w-full bg-white"
+                        className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
+                          }`}
                       />
                     </div>
                   </div>

@@ -1,11 +1,14 @@
+import ThemeContext from "@/context/ThemeContext";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const RecentOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const axiosSecure = useAxiosSecure();
+    const { isDarkMode } = useContext(ThemeContext);
+
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -55,15 +58,26 @@ const RecentOrders = () => {
     };
 
     return (
-        <div className="p-4 border border-gray-300 rounded-xl shadow-md overflow-hidden bg-white">
+        <div
+            className={`p-4 border rounded-xl shadow-md overflow-hidden ${isDarkMode
+                    ? "border-BgDarkAccent bg-BgDarkPrimary text-gray-200"
+                    : "border-gray-300 bg-white text-gray-900"
+                }`}
+        >
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Recent Biodatas</h2>
                 <div className="flex space-x-2">
-                    <Link to='/biodatas'>
-                        <button className="btn btn-outline btn-sm">See all</button>
+                    <Link to="/biodatas">
+                        <button
+                            className={`btn btn-outline btn-sm ${isDarkMode
+                                    ? "text-gray-200 border-gray-400 hover:bg-BgDarkAccent hover:text-gray-100"
+                                    : "text-gray-900 border-gray-300 hover:bg-gray-100"
+                                }`}
+                        >
+                            See all
+                        </button>
                     </Link>
-
                 </div>
             </div>
 
@@ -71,7 +85,12 @@ const RecentOrders = () => {
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
-                        <tr className="text-gray-500 text-sm">
+                        <tr
+                            className={`text-sm ${isDarkMode
+                                    ? "text-gray-400 border-BgDarkAccent"
+                                    : "text-gray-500"
+                                }`}
+                        >
                             <th>Biodatas</th>
                             <th>BD ID</th>
                             <th>Age</th>
@@ -80,7 +99,11 @@ const RecentOrders = () => {
                     </thead>
                     <tbody>
                         {orders.map((order) => (
-                            <tr key={order._id} className="hover:bg-gray-100">
+                            <tr
+                                key={order._id}
+                                className={`hover:${isDarkMode ? "bg-BgDarkSecondary" : "bg-gray-100"
+                                    }`}
+                            >
                                 <td className="flex items-center space-x-3 py-2">
                                     <div>
                                         <img
@@ -90,14 +113,33 @@ const RecentOrders = () => {
                                         />
                                     </div>
                                     <div>
-                                        <p className="font-medium">{order.name}</p>
+                                        <p
+                                            className={`font-medium ${isDarkMode ? "text-gray-200" : "text-gray-900"
+                                                }`}
+                                        >
+                                            {order.name}
+                                        </p>
                                     </div>
                                 </td>
 
-                                <td>{order.biodataId}</td>
-                                <td>{order.age}</td>
-                                <td className="font-semibold">{order.type}</td>
-
+                                <td
+                                    className={`${isDarkMode ? "text-gray-300" : "text-gray-900"
+                                        }`}
+                                >
+                                    {order.biodataId}
+                                </td>
+                                <td
+                                    className={`${isDarkMode ? "text-gray-300" : "text-gray-900"
+                                        }`}
+                                >
+                                    {order.age}
+                                </td>
+                                <td
+                                    className={`font-semibold ${isDarkMode ? "text-gray-300" : "text-gray-900"
+                                        }`}
+                                >
+                                    {order.type}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

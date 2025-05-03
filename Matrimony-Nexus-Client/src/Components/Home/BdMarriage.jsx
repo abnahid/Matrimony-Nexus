@@ -1,15 +1,27 @@
+import ThemeContext from "@/context/ThemeContext";
+import { useContext } from "react";
+
 const BdMarriage = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+
   return (
     <section
       id="works"
-      className="relative bg-gray-50 dark:bg-gray-900 py-10 sm:py-16 lg:py-24 px-6 md:px-0"
+      className={`relative py-10 sm:py-16 lg:py-24 px-6 md:px-0 ${isDarkMode ? "bg-BgDarkSecondary text-gray-200" : "bg-gray-50 text-gray-900"
+        }`}
     >
       <div className="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl dark:text-white text-gray-900 font-extrabold mx-auto md:text-6xl lg:text-5xl">
+          <h2
+            className={`text-4xl font-extrabold mx-auto md:text-6xl lg:text-5xl ${isDarkMode ? "text-white" : "text-gray-900"
+              }`}
+          >
             How Does It Work?
           </h2>
-          <p className="max-w-2xl mx-auto mt-4 text-base text-gray-400 leading-relaxed md:text-2xl">
+          <p
+            className={`max-w-2xl mx-auto mt-4 text-base leading-relaxed md:text-2xl ${isDarkMode ? "text-gray-400" : "text-gray-600"
+              }`}
+          >
             Matrimony Nexus makes your journey of finding the perfect life
             partner easy and seamless.
           </p>
@@ -31,39 +43,87 @@ const BdMarriage = () => {
 
           <div className="relative grid grid-cols-1 text-center gap-y-12 md:grid-cols-3 gap-x-12">
             <div>
-              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700">1</span>
+              <div
+                className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full shadow ${isDarkMode
+                  ? "bg-BgDarkSecondary border-gray-700"
+                  : "bg-white border-2 border-gray-200"
+                  }`}
+              >
+                <span
+                  className={`text-xl font-semibold ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                    }`}
+                >
+                  1
+                </span>
               </div>
-              <h3 className="mt-6 text-xl dark:text-white text-gray-900  font-semibold leading-tight md:mt-10">
+              <h3
+                className={`mt-6 text-xl font-semibold leading-tight md:mt-10 ${isDarkMode ? "text-white" : "text-gray-900"
+                  }`}
+              >
                 Create Your Profile
               </h3>
-              <p className="mt-4 text-base text-gray-400 md:text-lg">
+              <p
+                className={`mt-4 text-base md:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+              >
                 Register on the platform and provide details about yourself to
                 create a personalized profile.
               </p>
             </div>
 
             <div>
-              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700">2</span>
+              <div
+                className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full shadow ${isDarkMode
+                  ? "bg-BgDarkSecondary border-gray-700"
+                  : "bg-white border-2 border-gray-200"
+                  }`}
+              >
+                <span
+                  className={`text-xl font-semibold ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                    }`}
+                >
+                  2
+                </span>
               </div>
-              <h3 className="mt-6 text-xl dark:text-white text-gray-900  font-semibold leading-tight md:mt-10">
+              <h3
+                className={`mt-6 text-xl font-semibold leading-tight md:mt-10 ${isDarkMode ? "text-white" : "text-gray-900"
+                  }`}
+              >
                 Browse Biodatas
               </h3>
-              <p className="mt-4 text-base text-gray-400 md:text-lg">
+              <p
+                className={`mt-4 text-base md:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+              >
                 Explore detailed biodatas and filter by age, occupation,
                 division, and other preferences.
               </p>
             </div>
 
             <div>
-              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700">3</span>
+              <div
+                className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full shadow ${isDarkMode
+                  ? "bg-BgDarkSecondary border-gray-700"
+                  : "bg-white border-2 border-gray-200"
+                  }`}
+              >
+                <span
+                  className={`text-xl font-semibold ${isDarkMode ? "text-gray-400" : "text-gray-700"
+                    }`}
+                >
+                  3
+                </span>
               </div>
-              <h3 className="mt-6 text-xl dark:text-white text-gray-900  font-semibold leading-tight md:mt-10">
+              <h3
+                className={`mt-6 text-xl font-semibold leading-tight md:mt-10 ${isDarkMode ? "text-white" : "text-gray-900"
+                  }`}
+              >
                 Contact & Connect
               </h3>
-              <p className="mt-4 text-base text-gray-400 md:text-lg">
+              <p
+                className={`mt-4 text-base md:text-lg ${isDarkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+              >
                 Request contact information, interact, and take the next steps
                 toward your future.
               </p>

@@ -1,7 +1,8 @@
 import { Button } from "@/Components/ui/button";
+import ThemeContext from "@/context/ThemeContext";
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -11,6 +12,7 @@ const ViewBiodataPage = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchBiodata = async () => {
@@ -21,7 +23,7 @@ const ViewBiodataPage = () => {
         setBiodata(response.data.data[0]);
       } else {
         toast.error("No biodata found. Redirecting to create biodata...");
-        navigate("/dashboard/editBiodata"); // Redirect to the create biodata page
+        navigate("/dashboard/editBiodata");
       }
     };
 
@@ -45,30 +47,20 @@ const ViewBiodataPage = () => {
       });
 
       if (response.data.success) {
-        Swal.fire(
-          "Success!",
-          "Your premium request has been submitted.",
-          "success"
-        );
+        Swal.fire("Success!", "Your premium request has been submitted.", "success");
       } else {
-        Swal.fire(
-          "Error",
-          response.data.message || "Failed to submit premium request.",
-          "error"
-        );
+        Swal.fire("Error", response.data.message || "Failed to submit premium request.", "error");
       }
     }
   };
 
-  if (!biodata) return <div>Loading biodata...</div>;
+  if (!biodata) return <div className="p-10">Loading biodata...</div>;
 
   return (
-    <div className="container mx-auto p-10 py-24">
+    <div className={`container mx-auto p-10 py-24 ${isDarkMode ? "bg-BgDarkPrimary text-gray-100" : "bg-white text-gray-900"}`}>
       <h2 className="text-3xl font-bold mb-6">View Biodata</h2>
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className={`p-6 rounded-lg shadow-lg ${isDarkMode ? "bg-BgDarkSecondary" : "bg-white"}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Profile Image */}
-
           {/* Biodata Details */}
           <div>
             {Object.entries({
@@ -92,11 +84,13 @@ const ViewBiodataPage = () => {
               "Mobile Number": biodata.mobileNumber,
             }).map(([label, value]) => (
               <div key={label} className="mb-4">
-                <h4 className="text-sm font-medium text-gray-500">{label}</h4>
-                <p className="text-lg text-gray-800">{value || "N/A"}</p>
+                <h4 className={`text-sm font-medium ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{label}</h4>
+                <p className={`text-lg ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}>{value || "N/A"}</p>
               </div>
             ))}
           </div>
+
+          {/* Profile Image */}
           <div>
             <img
               src={biodata.profileImageLink}
@@ -108,10 +102,7 @@ const ViewBiodataPage = () => {
 
         {/* Make Premium Button */}
         <div className="mt-6 text-center">
-          <Button
-            onClick={handleMakePremiumRequest}
-            className="bg-custom-gradient text-white"
-          >
+          <Button onClick={handleMakePremiumRequest} className="bg-custom-gradient text-white">
             Make Biodata to Premium
           </Button>
         </div>

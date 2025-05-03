@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import ThemeContext from "@/context/ThemeContext";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 const UpcomingPage = () => {
+  const { isDarkMode } = useContext(ThemeContext);
   const defaultDuration = 90 * 60 * 60;
 
   const getStoredTime = () => {
@@ -43,31 +45,49 @@ const UpcomingPage = () => {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 min-h-screen flex flex-col justify-center items-center">
+    <div
+      className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? "bg-BgDarkPrimary text-gray-200" : "bg-gray-100 text-gray-900"
+        }`}
+    >
       <img
         src="https://www.svgrepo.com/show/426192/cogs-settings.svg"
         alt="Maintenance Logo"
         className="mb-8 h-40"
       />
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-700 dark:text-white mb-4">
+      <h1
+        className={`text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4 ${isDarkMode ? "text-gray-100" : "text-gray-700"
+          }`}
+      >
         Site is under maintenance
       </h1>
-      <p className="text-center text-gray-500 dark:text-gray-300 text-lg md:text-xl lg:text-2xl mb-4">
+      <p
+        className={`text-center text-lg md:text-xl lg:text-2xl mb-4 ${isDarkMode ? "text-gray-400" : "text-gray-500"
+          }`}
+      >
         We're working hard to improve the user experience. Stay tuned!
       </p>
-      <p className="text-center text-gray-600 dark:text-gray-400 text-lg font-semibold mb-6">
+      <p
+        className={`text-center text-lg font-semibold mb-6 ${isDarkMode ? "text-gray-300" : "text-gray-600"
+          }`}
+      >
         Estimated Time Remaining: <span className="text-red-500">{formatTime(timeLeft)}</span>
       </p>
       <div className="flex space-x-4">
         <Link
           to="/contact-us"
-          className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded dark:bg-gray-700 dark:hover:bg-gray-600"
+          className={`font-bold py-3 px-6 rounded ${isDarkMode
+            ? "bg-BgDarkSecondary hover:bg-gray-600 text-white"
+            : "bg-gray-800 hover:bg-gray-700 text-white"
+            }`}
         >
           Contact Us
         </Link>
         <button
           onClick={() => window.location.reload()}
-          className="border-2 border-gray-800 text-black font-bold py-3 px-6 rounded dark:text-white dark:border-white"
+          className={`border-2 font-bold py-3 px-6 rounded ${isDarkMode
+            ? "dark:text-white dark:border-white"
+            : "text-black border-gray-800"
+            }`}
         >
           Reload
         </button>

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import ThemeContext from '@/context/ThemeContext';
+import { useContext, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 
 const Plan = () => {
     const [selectedPlan, setSelectedPlan] = useState('professional');
-    const { isDarkMode } = false; // Assuming you have a way to get the dark mode state from context or props
+    const { isDarkMode } = useContext(ThemeContext);
+    // Assuming you have a way to get the dark mode state from context or props
 
     // Dark mode classes
     const darkModeClasses = {
-        bg: isDarkMode ? 'bg-gray-800' : 'bg-white',
+        bg: isDarkMode ? '' : 'bg-white',
         text: isDarkMode ? 'text-gray-100' : 'text-gray-900',
         textSecondary: isDarkMode ? 'text-gray-300' : 'text-gray-600',
         border: isDarkMode ? 'border-gray-700' : 'border-gray-200',
@@ -59,7 +61,7 @@ const Plan = () => {
     ];
 
     return (
-        <div className={`min-h-screen p-4 md:p-8 ${darkModeClasses.bg} ${darkModeClasses.text}`}>
+        <div className={`min-h-screen p-4 md:p-8  ${darkModeClasses.text}`}>
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
@@ -85,8 +87,8 @@ const Plan = () => {
                                 </div>
                                 {plan.tag && (
                                     <span className={`px-3 py-1 rounded-full text-sm ${plan.id === 'basic' ? 'bg-green-100 text-green-800' :
-                                            plan.id === 'professional' ? 'bg-blue-100 text-blue-800' :
-                                                'bg-purple-100 text-purple-800'
+                                        plan.id === 'professional' ? 'bg-blue-100 text-blue-800' :
+                                            'bg-purple-100 text-purple-800'
                                         }`}>
                                         {plan.tag}
                                     </span>
@@ -105,8 +107,8 @@ const Plan = () => {
                             <button
                                 onClick={() => setSelectedPlan(plan.id)}
                                 className={`w-full py-2 px-4 rounded-md font-medium ${selectedPlan === plan.id ?
-                                        `${darkModeClasses.button} text-white` :
-                                        `border ${darkModeClasses.border} ${darkModeClasses.text} hover:bg-gray-100 dark:hover:bg-gray-700`
+                                    `${darkModeClasses.button} text-white` :
+                                    `border ${darkModeClasses.border} ${darkModeClasses.text} hover:bg-gray-100 dark:hover:bg-gray-700`
                                     }`}
                             >
                                 {plan.id === 'basic' ? 'Current Plan' : 'Select Plan'}

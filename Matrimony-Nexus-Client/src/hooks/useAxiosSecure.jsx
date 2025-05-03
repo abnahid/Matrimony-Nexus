@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5012",
+  baseURL: "https://matrimony-nexus-server.vercel.app",
   // Removed `withCredentials: true` because we're no longer using cookies
 });
 

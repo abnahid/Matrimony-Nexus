@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import RangeSlider from './Filter/RangeSlide';
+import ThemeContext from "@/Context/ThemeContext";
+import { useContext, useState } from "react";
+import RangeSlider from "./Filter/RangeSlide";
 
 const SidebarFilters = ({ onFiltersChange }) => {
   const defaultFilters = {
@@ -11,6 +12,7 @@ const SidebarFilters = ({ onFiltersChange }) => {
   };
 
   const [filters, setFilters] = useState(defaultFilters);
+  const { isDarkMode } = useContext(ThemeContext);
 
   const handleGenderChange = (e) => {
     setFilters({ ...filters, gender: e.target.value });
@@ -45,11 +47,19 @@ const SidebarFilters = ({ onFiltersChange }) => {
     <div className="space-y-4">
       {/* Gender Filter */}
       <div>
-        <label className="block text-sm font-medium">Gender</label>
+        <label
+          className={`block text-sm font-medium ${isDarkMode ? "text-gray-200" : "text-gray-900"
+            }`}
+        >
+          Gender
+        </label>
         <select
           value={filters.gender}
           onChange={handleGenderChange}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${isDarkMode
+            ? "bg-gray-800 text-gray-200 border-gray-600"
+            : "bg-white text-gray-900 border-gray-300"
+            }`}
         >
           <option value="Male">Male</option>
           <option value="Female">Female</option>
@@ -76,11 +86,19 @@ const SidebarFilters = ({ onFiltersChange }) => {
 
       {/* Permanent Division Filter */}
       <div>
-        <label className="block text-sm font-medium">Permanent Division</label>
+        <label
+          className={`block text-sm font-medium ${isDarkMode ? "text-gray-200" : "text-gray-900"
+            }`}
+        >
+          Permanent Division
+        </label>
         <select
           value={filters.permanentDivision}
           onChange={handleDivisionChange}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${isDarkMode
+            ? "bg-gray-800 text-gray-200 border-gray-600"
+            : "bg-white text-gray-900 border-gray-300"
+            }`}
         >
           <option value="">Select Division</option>
           <option value="Dhaka">Dhaka</option>
@@ -95,19 +113,28 @@ const SidebarFilters = ({ onFiltersChange }) => {
 
       {/* Biodata ID Filter */}
       <div>
-        <label className="block text-sm font-medium">Biodata ID</label>
+        <label
+          className={`block text-sm font-medium ${isDarkMode ? "text-gray-200" : "text-gray-900"
+            }`}
+        >
+          Biodata ID
+        </label>
         <input
           type="text"
           value={filters.biodataId}
           onChange={handleBiodataIdChange}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${isDarkMode
+            ? "bg-gray-800 text-gray-200 border-gray-600"
+            : "bg-white text-gray-900 border-gray-300"
+            }`}
         />
       </div>
 
       {/* Apply Filters Button */}
       <button
         onClick={applyFilters}
-        className="w-full py-2 bg-BgPrimary text-white rounded"
+        className={`w-full py-2 rounded ${isDarkMode ? "bg-BgPrimary text-gray-200" : "bg-BgPrimary text-white"
+          } transition`}
       >
         Apply Filters
       </button>
@@ -115,7 +142,10 @@ const SidebarFilters = ({ onFiltersChange }) => {
       {/* Clear Filters Button */}
       <button
         onClick={clearFilters}
-        className="w-full py-2 bg-gray-500 text-white rounded mt-2"
+        className={`w-full py-2 rounded mt-2 ${isDarkMode
+          ? "bg-gray-600 text-gray-200"
+          : "bg-gray-500 text-white"
+          } transition`}
       >
         Clear Filters
       </button>
