@@ -80,7 +80,7 @@ export function RegisterForm({ className, ...props }) {
         };
 
         axiosPublic.post("/users", userInfo).then((res) => {
-          console.log("User POST response:", res.data);
+
           if (res.data.insertedId || res.data.message === "user already exists") {
             navigate("/");
           } else {

@@ -3,6 +3,7 @@ import { AuthContext } from "@/context/AuthProvider";
 import ThemeContext from "@/context/ThemeContext";
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import imageCompression from "browser-image-compression";
 import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -12,6 +13,7 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
   const { user } = useContext(AuthContext);
   const image_hosting_key = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+  const [compressedImage, setCompressedImage] = useState(null);
   const { isDarkMode } = useContext(ThemeContext);
 
   const [biodata, setBiodata] = useState({
@@ -60,6 +62,27 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
     setBiodata({ ...biodata, [name]: value });
   };
 
+  const handleImageUpload = async (event) => {
+    const imageFile = event.target.files[0];
+    if (imageFile) {
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+          fileType: "image/webp",
+        };
+
+        const compressedFile = await imageCompression(imageFile, options);
+        setCompressedImage(compressedFile);
+      } catch (error) {
+        console.error("Error compressing or converting image to WebP:", error);
+      }
+    }
+  };
+
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -77,23 +100,44 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
         age,
       };
 
-      console.log("Biodata to Submit:", biodataToSubmit);
+
 
       // Handle image upload
-      if (biodata.profileImageLink && typeof biodata.profileImageLink !== "string") {
-        const formData = new FormData();
-        formData.append("image", biodata.profileImageLink);
+      // if (biodata.profileImageLink && typeof biodata.profileImageLink !== "string") {
+      //   const formData = new FormData();
+      //   formData.append("image", biodata.profileImageLink);
 
-        const res = await axiosPublic.post(image_hosting_api, formData, {
+      //   const res = await axiosPublic.post(image_hosting_api, formData, {
+      //     headers: { "Content-Type": "multipart/form-data" },
+      //   });
+
+      //   if (res.data.success) {
+      //     biodataToSubmit.profileImageLink = res.data.data.display_url;
+      //   } else {
+      //     throw new Error("Image upload failed. Please try again.");
+      //   }
+      // }
+
+      if (compressedImage) {
+        const photoFormData = new FormData();
+        photoFormData.append("image", compressedImage);
+
+        const res = await axiosPublic.post(image_hosting_api, photoFormData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
         if (res.data.success) {
-          biodataToSubmit.profileImageLink = res.data.data.display_url;
-        } else {
+          const imageUrl = res.data.data.display_url;
+          biodataToSubmit.profileImageLink = imageUrl;
+
+          // ✅ This line fixes your issue — adds image to state for preview
+          setBiodata(prev => ({ ...prev, profileImageLink: imageUrl }));
+        }
+        else {
           throw new Error("Image upload failed. Please try again.");
         }
       }
+
 
       // API request to create or update biodata
       let response;
@@ -462,47 +506,39 @@ const EditBioData = ({ existingBiodata, biodataId }) => {
 
           <h3 className="text-lg font-bold mb-4">Upload Profile Image</h3>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium">Upload Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const generatedUrl = URL.createObjectURL(file);
-                    setBiodata({ ...biodata, profileImageLink: generatedUrl });
-                  }
-                }}
-                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
-                  }`}
-              />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium">Enter Image URL</label>
-              <input
-                type="text"
-                placeholder="Enter URL"
-                value={biodata.profileImageLink || ""}
-                onChange={(e) =>
-                  setBiodata({ ...biodata, profileImageLink: e.target.value })
-                }
-                className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'
-                  }`}
-              />
-            </div>
 
-            {biodata.profileImageLink && (
+            <div className="space-y-4">
               <div>
-                <h4 className="text-sm font-medium">Preview</h4>
-                <img
-                  src={biodata.profileImageLink}
-                  alt="Profile Preview"
-                  className="w-full h-40 object-cover rounded-lg border"
+                <label className="block text-sm font-medium">Upload Image</label>
+                <input type="file" accept="image/*" onChange={handleImageUpload} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium">Or enter image URL</label>
+                <input
+                  type="text"
+                  value={biodata.profileImageLink}
+                  onChange={(e) => {
+                    setBiodata({ ...biodata, profileImageLink: e.target.value });
+                    setPreviewUrl(e.target.value); // update preview
+                  }}
+                  className={`w-full p-2 border rounded ${isDarkMode ? 'bg-BgDarkAccent text-white border-gray-600' : 'bg-white text-black border'}`}
+                  placeholder="https://example.com/photo.jpg"
                 />
               </div>
-            )}
+
+              {(biodata.profileImageLink) && (
+                <div>
+                  <h4 className="text-sm font-medium">Preview</h4>
+                  <img
+                    src={biodata.profileImageLink}
+                    alt="Preview"
+                    className="w-full h-40 object-cover rounded-lg border"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div >

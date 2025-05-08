@@ -31,7 +31,7 @@ export function LoginForm({ className, ...props }) {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const userCaptchaValue = e.target.captcha.value;
+    const userCaptchaValue = e.target.captcha?.value;
 
     if (!validateCaptcha(userCaptchaValue)) {
       toast.error("Invalid captcha. Please try again.");
@@ -51,6 +51,22 @@ export function LoginForm({ className, ...props }) {
       });
   };
 
+  const handleGuestLogin = () => {
+    // Automatically log in with guest credentials and skip captcha validation
+    const guestEmail = "guest@abnahid.com";
+    const guestPassword = "guest2@Ab";
+    loginUser(guestEmail, guestPassword)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        toast.success(`Guest login successful: ${user.email}`);
+        setUser(user);
+        navigate(location?.state?.from || "/");
+      })
+      .catch((error) => {
+        toast.error(`Error: ${error.message}`);
+      });
+  };
+
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
@@ -62,6 +78,10 @@ export function LoginForm({ className, ...props }) {
     } else {
       setDisabled(true);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setType(type === "password" ? "text" : "password");
   };
 
   return (
@@ -84,15 +104,16 @@ export function LoginForm({ className, ...props }) {
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="ml-auto text-sm text-muted-foreground"
             >
-              Forgot your password?
-            </a>
+              {type === "password" ? "Show" : "Hide"} Password
+            </button>
           </div>
 
-          <Input id="password" type="password" name="password" required />
+          <Input id="password" type={type} name="password" required />
         </div>
         <div className="grid gap-2">
           <label className="label">
@@ -107,6 +128,9 @@ export function LoginForm({ className, ...props }) {
         </div>
         <Button type="submit" className="w-full" disabled={disabled}>
           Login
+        </Button>
+        <Button type="button" variant="outline" className="w-full" onClick={handleGuestLogin}>
+          Login as Guest
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

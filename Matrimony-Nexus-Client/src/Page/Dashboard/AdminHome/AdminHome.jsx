@@ -120,14 +120,15 @@ const AdminHome = () => {
       </div>
 
       {/* Recent Users and Orders */}
-      <div className="mt-8 md:grid gap-8 grid-cols-6">
-        <div className="col-span-2">
+      <div className="mt-8 grid gap-8 grid-cols-1 md:grid-cols-6">
+        <div className="md:col-span-2">
           <ResentUser />
         </div>
-        <div className="col-span-4">
+        <div className="md:col-span-4">
           <RecentOrders />
         </div>
       </div>
+
     </div>
   );
 };

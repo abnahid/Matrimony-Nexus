@@ -10,7 +10,7 @@ import {
   User,
 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { FaBars, FaMoon, FaSun } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
@@ -76,15 +76,7 @@ const Dashboard = () => {
               <div className="flex items-center justify-between">
                 {/* Left Side: Menu Toggle & Page Title */}
                 <div className="flex items-center space-x-4">
-                  <label
-                    htmlFor="my-drawer-2"
-                    className={`lg:hidden flex items-center justify-center h-10 w-10 rounded-full ${isDarkMode
-                      ? "bg-gray-700 text-purple-400 hover:bg-gray-600"
-                      : "bg-purple-100 text-purple-600 hover:bg-purple-200"
-                      } cursor-pointer transition-colors duration-200`}
-                  >
-                    <FaBars size={18} />
-                  </label>
+
 
                   <div className="hidden md:block">
 
@@ -232,13 +224,16 @@ const Dashboard = () => {
                               Profile
                             </button>
                           </Link>
-                          <button
-                            className={`w-full flex items-center px-4 py-2 text-sm ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                              }`}
-                          >
-                            <Settings className="h-4 w-4 mr-2" />
-                            Settings
-                          </button>
+                          <Link to="/dashboard/settings">
+                            <button
+                              className={`w-full flex items-center px-4 py-2 text-sm ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
+                                }`}
+                            >
+                              <Settings className="h-4 w-4 mr-2" />
+                              Settings
+                            </button>
+                          </Link>
+
                           <button
                             className={`w-full flex items-center px-4 py-2 text-sm ${isDarkMode
                               ? "text-red-400 hover:bg-gray-700"

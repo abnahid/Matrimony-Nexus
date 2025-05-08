@@ -9,4 +9,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    exclude: ['events'], // Exclude 'events' module to avoid browser compatibility issue
+  },
 });

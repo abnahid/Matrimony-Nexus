@@ -91,7 +91,7 @@ const ProfileSettings = () => {
     try {
       const dataToUpdate = { ...formData };
 
-      // Handle Photo Update
+      // Handle photo updates
       if (activeSection === "photo" && formData.photoFile) {
         const photoFormData = new FormData();
         photoFormData.append("image", formData.photoFile);
@@ -103,16 +103,15 @@ const ProfileSettings = () => {
         if (res.data.success) {
           dataToUpdate.photoUrl = res.data.data.display_url;
 
-          await updateUserProfile(user, {
-            photoURL: res.data.data.display_url,
-          });
+          // Call updateUserProfile with only photoURL
+          await updateUserProfile(null, dataToUpdate.photoUrl);
         } else {
           throw new Error("Image upload failed. Please try again.");
         }
       }
 
       // Update data on the server
-      const response = await axiosPublic.patch(`/users/${user.email}`, dataToUpdate);
+      await axiosPublic.patch(`/users/${user.email}`, dataToUpdate);
 
       // Update local state with the updated data
       setProfileData((prevData) => ({

@@ -17,7 +17,7 @@ const BiodataShowcase = () => {
                 params: { page: 1, limit: 20 },
             });
 
-            console.log("Fetched Biodatas:", response.data.data); // Debugging
+
             const biodatas = response.data.data || [];
 
             if (biodatas.length > 0) {
@@ -30,7 +30,7 @@ const BiodataShowcase = () => {
 
         fetchBiodatas();
     }, [axiosPublic]);
-    console.log("Random Biodatas:", randomBiodatas); // Debugging
+
 
     return (
         <div

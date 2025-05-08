@@ -13,6 +13,7 @@ app.use(
   cors({
     origin: ["https://matrimony-nexus.netlify.app", "http://localhost:5173"],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
@@ -22,11 +23,13 @@ app.use(express.json());
 
 app.post("/jwt", (req, res) => {
   const user = req.body;
-  const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10h" });
+  const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "30d", // Set to 30 days
+  });
 
-  // No cookies
   res.send({ success: true, token });
 });
+
 
 // Middleware: verify token from Authorization header
 const verifyToken = (req, res, next) => {
@@ -82,8 +85,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect to MongoDB
-    // await client.connect();
+
 
     // Collections
     const biodatasCollection = client
@@ -219,6 +221,7 @@ async function run() {
       const users = await usersCollection
         .find({ premium: true, approvedPremium: { $ne: true } })
         .toArray();
+      res.send(users);
     });
 
     app.patch(
@@ -456,6 +459,7 @@ async function run() {
         ...biodata,
         biodataId: newBiodataId,
         contactEmail,
+        createdAt: new Date(),
       };
 
       const result = await biodatasCollection.insertOne(newBiodata);

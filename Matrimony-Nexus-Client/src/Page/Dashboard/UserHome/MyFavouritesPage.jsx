@@ -33,7 +33,7 @@ const MyFavouritesPage = () => {
     }
   };
 
-  console.log("favorites", favorites);
+
 
   return (
     <div className="container mx-auto p-6">
@@ -46,20 +46,20 @@ const MyFavouritesPage = () => {
 
       <div
         className={`overflow-x-auto rounded-lg border shadow ${isDarkMode
-            ? "border-BgDarkAccent bg-BgDarkPrimary"
-            : "border-gray-300 bg-white"
+          ? "border-BgDarkAccent bg-BgDarkPrimary"
+          : "border-gray-300 bg-white"
           }`}
       >
         <table
           className={`min-w-full divide-y text-sm ${isDarkMode
-              ? "divide-gray-700 text-gray-200"
-              : "divide-gray-200 text-gray-700"
+            ? "divide-gray-700 text-gray-200"
+            : "divide-gray-200 text-gray-700"
             }`}
         >
           <thead
             className={`text-left font-semibold ${isDarkMode
-                ? "bg-BgDarkSecondary text-gray-100"
-                : "bg-gray-100"
+              ? "bg-BgDarkSecondary text-gray-100"
+              : "bg-gray-100"
               }`}
           >
             <tr>
@@ -91,8 +91,8 @@ const MyFavouritesPage = () => {
                     <Button
                       onClick={() => handleDelete(favorite.biodataId)}
                       className={`px-3 py-1 rounded transition ${isDarkMode
-                          ? "bg-red-600 hover:bg-red-700 text-white"
-                          : "bg-red-500 hover:bg-red-600 text-white"
+                        ? "bg-red-600 hover:bg-red-700 text-white"
+                        : "bg-red-500 hover:bg-red-600 text-white"
                         }`}
                     >
                       Delete
